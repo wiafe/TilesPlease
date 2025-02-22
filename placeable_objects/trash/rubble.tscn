@@ -1,0 +1,40 @@
+[gd_scene load_steps=7 format=3 uid="uid://bhh8q75hkdvg6"]
+
+[ext_resource type="Script" path="res://placeable_objects/plants/plant_object.gd" id="1_1fhiq"]
+[ext_resource type="PackedScene" uid="uid://x2s7ael0ufgf" path="res://trash.tscn" id="1_3ad8v"]
+[ext_resource type="PackedScene" uid="uid://ddvf778j7g0cr" path="res://placeable_object.tscn" id="1_bhmg2"]
+[ext_resource type="Texture2D" uid="uid://dfeyx6kwvqa31" path="res://assets/sprites/rubble1.png" id="4_2bcgq"]
+[ext_resource type="Shader" path="res://shaders/sway.gdshader" id="4_j5w2a"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_jga3n"]
+shader = ExtResource("4_j5w2a")
+shader_parameter/speed = 0.25
+shader_parameter/minStrength = 0.087
+shader_parameter/maxStrength = 0.082
+shader_parameter/strengthScale = 100.0
+shader_parameter/interval = 1.0
+shader_parameter/detail = 2.0
+shader_parameter/distortion = 1.0
+shader_parameter/heightOffset = 0.272
+shader_parameter/offset = 0.0
+
+[node name="Rubble" type="Node2D"]
+z_index = 3
+y_sort_enabled = true
+script = ExtResource("1_1fhiq")
+metadata/_edit_horizontal_guides_ = [297.0]
+
+[node name="Trash" parent="." instance=ExtResource("1_3ad8v")]
+
+[node name="PlaceableObject" parent="." instance=ExtResource("1_bhmg2")]
+
+[node name="SpriteContainer" type="Sprite2D" parent="."]
+position = Vector2(0, 295)
+offset = Vector2(0, -295)
+
+[node name="Sprite" type="Sprite2D" parent="SpriteContainer"]
+material = SubResource("ShaderMaterial_jga3n")
+position = Vector2(1, 21)
+scale = Vector2(0.615799, 0.615799)
+texture = ExtResource("4_2bcgq")
+offset = Vector2(0, -334.312)

@@ -1,0 +1,72 @@
+[gd_scene load_steps=9 format=3 uid="uid://c1gh1v3mijqdn"]
+
+[ext_resource type="Script" path="res://placeable_objects/plants/plant_object.gd" id="1_kiirj"]
+[ext_resource type="PackedScene" uid="uid://dl2rufgbedh11" path="res://plant.tscn" id="1_l8cl4"]
+[ext_resource type="PackedScene" uid="uid://ddvf778j7g0cr" path="res://placeable_object.tscn" id="3_sqcvr"]
+[ext_resource type="Texture2D" uid="uid://c1x02743onrpe" path="res://assets/sprites/seed1.png" id="3_uej3p"]
+[ext_resource type="Shader" path="res://shaders/sway.gdshader" id="4_kpdhl"]
+[ext_resource type="Texture2D" uid="uid://drqaga8t8cf6" path="res://assets/sprites/agave1.png" id="5_mwdqt"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_jga3n"]
+shader = ExtResource("4_kpdhl")
+shader_parameter/speed = 1.25
+shader_parameter/minStrength = 0.05
+shader_parameter/maxStrength = 0.186
+shader_parameter/strengthScale = 102.04
+shader_parameter/interval = 5.415
+shader_parameter/detail = 1.0
+shader_parameter/distortion = 0.0
+shader_parameter/heightOffset = 0.091
+shader_parameter/offset = 0.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_m7her"]
+size = Vector2(106, 85)
+
+[node name="Agave" type="Node2D"]
+z_index = 3
+y_sort_enabled = true
+script = ExtResource("1_kiirj")
+
+[node name="Plant" parent="." instance=ExtResource("1_l8cl4")]
+
+[node name="PlaceableObject" parent="." instance=ExtResource("3_sqcvr")]
+
+[node name="SeedForm" type="Sprite2D" parent="."]
+position = Vector2(0, 295)
+offset = Vector2(0, -282)
+
+[node name="Seed1" type="Sprite2D" parent="SeedForm"]
+position = Vector2(-17, -277.175)
+scale = Vector2(0.93, 0.93)
+texture = ExtResource("3_uej3p")
+
+[node name="Seed2" type="Sprite2D" parent="SeedForm"]
+position = Vector2(3, -293.675)
+scale = Vector2(0.93, 0.93)
+texture = ExtResource("3_uej3p")
+
+[node name="Seed3" type="Sprite2D" parent="SeedForm"]
+position = Vector2(10, -267.675)
+scale = Vector2(0.93, 0.93)
+texture = ExtResource("3_uej3p")
+
+[node name="GrownForm" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(0, 295)
+offset = Vector2(0, -295)
+
+[node name="Agave" type="Sprite2D" parent="GrownForm"]
+material = SubResource("ShaderMaterial_jga3n")
+position = Vector2(0, 3)
+texture = ExtResource("5_mwdqt")
+offset = Vector2(0, -295)
+
+[node name="PickableArea" type="Area2D" parent="GrownForm"]
+position = Vector2(0, 5)
+collision_layer = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GrownForm/PickableArea"]
+position = Vector2(1, -42.5)
+shape = SubResource("RectangleShape2D_m7her")
+
+[node name="FormTimer" type="Timer" parent="."]

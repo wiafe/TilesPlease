@@ -1,0 +1,724 @@
+[gd_scene load_steps=32 format=3 uid="uid://ot1h7twgf8m5"]
+
+[ext_resource type="Script" path="res://scripts/main.gd" id="1_hmemt"]
+[ext_resource type="Texture2D" uid="uid://ixytqrvaghsn" path="res://assets/sprites/cloud1.png" id="2_5kvn5"]
+[ext_resource type="AudioStream" uid="uid://bjyhjl4ftl8t1" path="res://assets/sfx/ambience/draper_sfx_north_wales_evening_thunder_storm_sparrows_rain_becoming_heavier.mp3" id="2_q30dh"]
+[ext_resource type="AudioStream" uid="uid://c6644ltbmycaw" path="res://assets/sfx/ambience/PMSFX_RAINVege_RAIN_LIGHT_DRIZLE_DRIPPY_18MRRAT_2441.mp3" id="2_q60dw"]
+[ext_resource type="Texture2D" uid="uid://8k17pq5s6pep" path="res://assets/sprites/ground_tile_porous1.png" id="3_4tyib"]
+[ext_resource type="Texture2D" uid="uid://dfdpjhri6eic6" path="res://assets/sprites/cloud2.png" id="3_cgns7"]
+[ext_resource type="Script" path="res://scripts/ground_tile.gd" id="3_ycc3o"]
+[ext_resource type="Shader" path="res://shaders/rain.gdshader" id="4_0g4qk"]
+[ext_resource type="AudioStream" uid="uid://c6wvhs3jghy0c" path="res://assets/sfx/music/music_kulluh_Star_Chasers_005.mp3" id="4_43euw"]
+[ext_resource type="Texture2D" uid="uid://b2a8lqhw4dnsa" path="res://assets/sprites/ground_tile_porous2.png" id="4_t4t6h"]
+[ext_resource type="Texture2D" uid="uid://lp7hd12ip0np" path="res://assets/sprites/cloud3.png" id="4_ufish"]
+[ext_resource type="Texture2D" uid="uid://bm1psd4wtsutd" path="res://assets/sprites/cloud4.png" id="5_56b34"]
+[ext_resource type="Texture2D" uid="uid://pmx81j57qnqy" path="res://assets/sprites/ground_tile_foliage2.png" id="5_o1t1q"]
+[ext_resource type="Texture2D" uid="uid://q1b48cjqtbyx" path="res://assets/sprites/ground_tile_foliage1.png" id="6_pitld"]
+[ext_resource type="Shader" path="res://shaders/stars.gdshader" id="6_v0bea"]
+[ext_resource type="Shader" path="res://shaders/god_rays.gdshader" id="11_7lido"]
+[ext_resource type="Texture2D" uid="uid://cosjnbmc1mi66" path="res://assets/ui/individual_Frame 2.png" id="12_7pk4a"]
+[ext_resource type="Texture2D" uid="uid://cksbup34hn3og" path="res://assets/ui/container_52.png" id="17_la1hk"]
+[ext_resource type="Texture2D" uid="uid://cm8xd17l3ejox" path="res://assets/ui/individual-21.png" id="18_4t8k6"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_rebb7"]
+shader = ExtResource("6_v0bea")
+shader_parameter/bg_color = Color(0.0705882, 0.0705882, 0.0705882, 1)
+shader_parameter/small_star_color = Color(1, 1, 1, 1)
+shader_parameter/medium_star_color = Color(0.991125, 0.799778, 0.919463, 1)
+shader_parameter/big_star_color = Color(0.970858, 0.897107, 0.370576, 1)
+shader_parameter/offset = null
+shader_parameter/bigStarSlow = 0.2
+shader_parameter/mediumStarSlow = 0.5
+shader_parameter/smallStarSlow = 1.0
+shader_parameter/smallStarAmount = 0.001
+shader_parameter/mediumStarAmount = 0.005
+shader_parameter/bigStarAmount = 0.009
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_v6qgr"]
+shader = ExtResource("4_0g4qk")
+shader_parameter/rain_amount = 64.0
+shader_parameter/near_rain_length = 0.06
+shader_parameter/far_rain_length = 0.02
+shader_parameter/near_rain_width = 0.234
+shader_parameter/far_rain_width = 0.17
+shader_parameter/near_rain_transparency = 0.286
+shader_parameter/far_rain_transparency = 0.188
+shader_parameter/rain_color = Color(1, 1, 1, 1)
+shader_parameter/base_rain_speed = 0.467
+shader_parameter/additional_rain_speed = 0.243
+shader_parameter/slant = 0.2
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0mgj4"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o3b6y"]
+bg_color = Color(1, 1, 1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yjued"]
+content_margin_left = 32.0
+content_margin_top = 32.0
+content_margin_right = 32.0
+content_margin_bottom = 32.0
+bg_color = Color(0.980392, 0.980392, 0.980392, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_llmtp"]
+content_margin_left = 8.0
+content_margin_top = 8.0
+content_margin_right = 8.0
+content_margin_bottom = 8.0
+bg_color = Color(0.0705882, 0.0705882, 0.0705882, 1)
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_orjv4"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_oswe7"]
+texture = ExtResource("12_7pk4a")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_g8jkt"]
+texture = ExtResource("17_la1hk")
+texture_margin_left = 200.0
+texture_margin_top = 200.0
+texture_margin_right = 200.0
+texture_margin_bottom = 200.0
+region_rect = Rect2(0, 0, 360, 360)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ckua5"]
+shader = ExtResource("11_7lido")
+shader_parameter/angle = -0.375
+shader_parameter/position = -0.075
+shader_parameter/spread = 0.061
+shader_parameter/cutoff = -0.108
+shader_parameter/falloff = 1.0
+shader_parameter/edge_fade = 0.996
+shader_parameter/speed = 1.0
+shader_parameter/ray1_density = 9.82
+shader_parameter/ray2_density = 27.505
+shader_parameter/ray2_intensity = 0.291
+shader_parameter/color = Color(1, 1, 1, 0.197)
+shader_parameter/hdr = true
+shader_parameter/seed = 5.0
+
+[sub_resource type="Gradient" id="Gradient_onmpc"]
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_1u71b"]
+gradient = SubResource("Gradient_onmpc")
+
+[node name="Main" type="Node2D" node_paths=PackedStringArray("tiles_node", "place_progress", "place_timer", "round_timer_label", "round_timer", "upgrade_container", "clouds_node")]
+script = ExtResource("1_hmemt")
+tiles_node = NodePath("Env")
+place_progress = NodePath("UILayer/Control/ProgressContainer/PlaceProgress")
+place_timer = NodePath("PlaceTimer")
+round_timer_label = NodePath("UILayer/Control/Panel/RoundTimerLabel")
+round_timer = NodePath("RoundTimer")
+upgrade_container = NodePath("UILayer/Control/Upgrade")
+clouds_node = NodePath("Clouds")
+
+[node name="Audio" type="Node" parent="."]
+
+[node name="PlantAudio" type="AudioStreamPlayer" parent="Audio"]
+
+[node name="BackgroundAudio" type="AudioStreamPlayer" parent="Audio"]
+stream = ExtResource("2_q60dw")
+volume_db = -10.0
+autoplay = true
+
+[node name="AmbientAudio" type="AudioStreamPlayer" parent="Audio"]
+stream = ExtResource("2_q30dh")
+volume_db = -20.0
+autoplay = true
+
+[node name="BackgroundMusicAudio" type="AudioStreamPlayer" parent="Audio"]
+stream = ExtResource("4_43euw")
+volume_db = -30.0
+autoplay = true
+
+[node name="BackgroundLayer" type="CanvasLayer" parent="."]
+layer = -1
+follow_viewport_enabled = true
+
+[node name="ColorRect" type="ColorRect" parent="BackgroundLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.0705882, 0.0705882, 0.0705882, 1)
+metadata/_edit_lock_ = true
+
+[node name="Stars" type="ColorRect" parent="BackgroundLayer"]
+show_behind_parent = true
+material = SubResource("ShaderMaterial_rebb7")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(1, 1, 1, 0)
+metadata/_edit_lock_ = true
+
+[node name="Clouds" type="Node2D" parent="."]
+position = Vector2(913, 376)
+
+[node name="Cloud" type="Sprite2D" parent="Clouds"]
+position = Vector2(-123, 224.5)
+texture = ExtResource("2_5kvn5")
+
+[node name="Cloud4" type="Sprite2D" parent="Clouds"]
+position = Vector2(217, 235.5)
+texture = ExtResource("5_56b34")
+
+[node name="Cloud2" type="Sprite2D" parent="Clouds"]
+position = Vector2(77, 207.5)
+texture = ExtResource("3_cgns7")
+
+[node name="Cloud3" type="Sprite2D" parent="Clouds"]
+position = Vector2(-70, 201.5)
+texture = ExtResource("4_ufish")
+
+[node name="Rain" type="ColorRect" parent="Clouds"]
+show_behind_parent = true
+material = SubResource("ShaderMaterial_v6qgr")
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -205.0
+offset_top = -112.0
+offset_right = 267.0
+offset_bottom = 235.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(1, 1, 1, 0)
+
+[node name="Env" type="Node2D" parent="."]
+y_sort_enabled = true
+position = Vector2(153, -155)
+
+[node name="GroundTileFoliage4" type="Sprite2D" parent="Env" node_paths=PackedStringArray("land_sound")]
+visible = false
+y_sort_enabled = true
+position = Vector2(796, 259)
+texture = ExtResource("4_t4t6h")
+script = ExtResource("3_ycc3o")
+hover_color = Color(1, 0.769982, 0.163756, 0.51)
+land_sound = NodePath("LandingSound")
+
+[node name="HoverArea2D" type="Area2D" parent="Env/GroundTileFoliage4"]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Env/GroundTileFoliage4/HoverArea2D"]
+polygon = PackedVector2Array(2, 244, 72, 282, 4, 318, -69, 282)
+
+[node name="HoverPolygon2D" type="Polygon2D" parent="Env/GroundTileFoliage4/HoverArea2D"]
+visible = false
+z_index = 2
+color = Color(1, 0.769982, 0.163756, 0.51)
+polygon = PackedVector2Array(2, 244, 72, 281, 5, 317, -70, 283)
+
+[node name="LandingSound" type="AudioStreamPlayer" parent="Env/GroundTileFoliage4"]
+
+[node name="Unlockable" type="Node" parent="Env/GroundTileFoliage4"]
+
+[node name="GroundTileFoliage5" type="Sprite2D" parent="Env" node_paths=PackedStringArray("land_sound")]
+visible = false
+y_sort_enabled = true
+position = Vector2(715, 301)
+texture = ExtResource("4_t4t6h")
+script = ExtResource("3_ycc3o")
+hover_color = Color(1, 0.769982, 0.163756, 0.51)
+land_sound = NodePath("LandingSound")
+
+[node name="HoverArea2D" type="Area2D" parent="Env/GroundTileFoliage5"]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Env/GroundTileFoliage5/HoverArea2D"]
+polygon = PackedVector2Array(2, 244, 72, 282, 4, 318, -69, 282)
+
+[node name="HoverPolygon2D" type="Polygon2D" parent="Env/GroundTileFoliage5/HoverArea2D"]
+visible = false
+z_index = 2
+color = Color(1, 0.769982, 0.163756, 0.51)
+polygon = PackedVector2Array(2, 244, 72, 281, 5, 317, -70, 283)
+
+[node name="LandingSound" type="AudioStreamPlayer" parent="Env/GroundTileFoliage5"]
+
+[node name="Unlockable" type="Node" parent="Env/GroundTileFoliage5"]
+
+[node name="GroundTileFoliage6" type="Sprite2D" parent="Env" node_paths=PackedStringArray("land_sound")]
+visible = false
+y_sort_enabled = true
+position = Vector2(638, 344)
+texture = ExtResource("4_t4t6h")
+script = ExtResource("3_ycc3o")
+hover_color = Color(1, 0.769982, 0.163756, 0.51)
+land_sound = NodePath("LandingSound")
+
+[node name="HoverArea2D" type="Area2D" parent="Env/GroundTileFoliage6"]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Env/GroundTileFoliage6/HoverArea2D"]
+polygon = PackedVector2Array(2, 244, 72, 282, 4, 318, -69, 282)
+
+[node name="HoverPolygon2D" type="Polygon2D" parent="Env/GroundTileFoliage6/HoverArea2D"]
+visible = false
+z_index = 2
+color = Color(1, 0.769982, 0.163756, 0.51)
+polygon = PackedVector2Array(2, 244, 72, 281, 5, 317, -70, 283)
+
+[node name="LandingSound" type="AudioStreamPlayer" parent="Env/GroundTileFoliage6"]
+
+[node name="Unlockable" type="Node" parent="Env/GroundTileFoliage6"]
+
+[node name="GroundTileFoliage7" type="Sprite2D" parent="Env" node_paths=PackedStringArray("land_sound")]
+visible = false
+y_sort_enabled = true
+position = Vector2(552, 384)
+texture = ExtResource("4_t4t6h")
+script = ExtResource("3_ycc3o")
+hover_color = Color(1, 0.769982, 0.163756, 0.51)
+land_sound = NodePath("LandingSound")
+
+[node name="HoverArea2D" type="Area2D" parent="Env/GroundTileFoliage7"]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Env/GroundTileFoliage7/HoverArea2D"]
+polygon = PackedVector2Array(2, 244, 72, 282, 4, 318, -69, 282)
+
+[node name="HoverPolygon2D" type="Polygon2D" parent="Env/GroundTileFoliage7/HoverArea2D"]
+visible = false
+z_index = 2
+color = Color(1, 0.769982, 0.163756, 0.51)
+polygon = PackedVector2Array(2, 244, 72, 281, 5, 317, -70, 283)
+
+[node name="LandingSound" type="AudioStreamPlayer" parent="Env/GroundTileFoliage7"]
+
+[node name="Unlockable" type="Node" parent="Env/GroundTileFoliage7"]
+
+[node name="GroundTileFoliage3" type="Sprite2D" parent="Env" node_paths=PackedStringArray("land_sound")]
+visible = false
+y_sort_enabled = true
+position = Vector2(879, 293)
+texture = ExtResource("5_o1t1q")
+script = ExtResource("3_ycc3o")
+hover_color = Color(1, 0.769982, 0.163756, 0.51)
+land_sound = NodePath("LandingSound")
+
+[node name="HoverArea2D" type="Area2D" parent="Env/GroundTileFoliage3"]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Env/GroundTileFoliage3/HoverArea2D"]
+polygon = PackedVector2Array(1, 248, 70, 286, -2, 325, -76, 290)
+
+[node name="HoverPolygon2D" type="Polygon2D" parent="Env/GroundTileFoliage3/HoverArea2D"]
+visible = false
+z_index = 2
+color = Color(1, 0.769982, 0.163756, 0.51)
+polygon = PackedVector2Array(1, 248, 70, 286, -3, 324, -75, 289)
+
+[node name="LandingSound" type="AudioStreamPlayer" parent="Env/GroundTileFoliage3"]
+
+[node name="Unlockable" type="Node" parent="Env/GroundTileFoliage3"]
+
+[node name="GroundTilePorous7" type="Sprite2D" parent="Env" node_paths=PackedStringArray("land_sound")]
+y_sort_enabled = true
+position = Vector2(796, 340)
+texture = ExtResource("3_4tyib")
+script = ExtResource("3_ycc3o")
+hover_color = Color(1, 0.769982, 0.163756, 0.51)
+land_sound = NodePath("LandingSound")
+
+[node name="HoverArea2D" type="Area2D" parent="Env/GroundTilePorous7"]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Env/GroundTilePorous7/HoverArea2D"]
+polygon = PackedVector2Array(4, 245, 76, 281, 0, 319, -71, 281)
+
+[node name="HoverPolygon2D" type="Polygon2D" parent="Env/GroundTilePorous7/HoverArea2D"]
+visible = false
+z_index = 2
+color = Color(1, 0.769982, 0.163756, 0.51)
+polygon = PackedVector2Array(3, 246, 76, 282, 1, 318, -72, 281)
+
+[node name="LandingSound" type="AudioStreamPlayer" parent="Env/GroundTilePorous7"]
+
+[node name="GroundTilePorous6" type="Sprite2D" parent="Env" node_paths=PackedStringArray("land_sound")]
+y_sort_enabled = true
+position = Vector2(715, 383)
+texture = ExtResource("3_4tyib")
+script = ExtResource("3_ycc3o")
+hover_color = Color(1, 0.769982, 0.163756, 0.51)
+land_sound = NodePath("LandingSound")
+
+[node name="HoverArea2D" type="Area2D" parent="Env/GroundTilePorous6"]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Env/GroundTilePorous6/HoverArea2D"]
+polygon = PackedVector2Array(4, 245, 76, 281, 0, 319, -71, 281)
+
+[node name="HoverPolygon2D" type="Polygon2D" parent="Env/GroundTilePorous6/HoverArea2D"]
+visible = false
+z_index = 2
+color = Color(1, 0.769982, 0.163756, 0.51)
+polygon = PackedVector2Array(3, 246, 76, 282, 1, 318, -72, 281)
+
+[node name="LandingSound" type="AudioStreamPlayer" parent="Env/GroundTilePorous6"]
+
+[node name="GroundTilePorous5" type="Sprite2D" parent="Env" node_paths=PackedStringArray("land_sound")]
+y_sort_enabled = true
+position = Vector2(635, 421)
+texture = ExtResource("3_4tyib")
+script = ExtResource("3_ycc3o")
+hover_color = Color(1, 0.769982, 0.163756, 0.51)
+land_sound = NodePath("LandingSound")
+
+[node name="HoverArea2D" type="Area2D" parent="Env/GroundTilePorous5"]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Env/GroundTilePorous5/HoverArea2D"]
+polygon = PackedVector2Array(2, 243.5, 75, 281, 5, 315.5, -69, 281.5)
+
+[node name="HoverPolygon2D" type="Polygon2D" parent="Env/GroundTilePorous5/HoverArea2D"]
+visible = false
+z_index = 2
+color = Color(1, 0.769982, 0.163756, 0.51)
+polygon = PackedVector2Array(3, 244.5, 75, 282, 5, 316.5, -70, 281)
+
+[node name="LandingSound" type="AudioStreamPlayer" parent="Env/GroundTilePorous5"]
+
+[node name="GroundTileFoliage2" type="Sprite2D" parent="Env" node_paths=PackedStringArray("land_sound")]
+visible = false
+y_sort_enabled = true
+position = Vector2(954, 333)
+texture = ExtResource("5_o1t1q")
+script = ExtResource("3_ycc3o")
+hover_color = Color(1, 0.769982, 0.163756, 0.51)
+land_sound = NodePath("LandingSound")
+
+[node name="HoverArea2D" type="Area2D" parent="Env/GroundTileFoliage2"]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Env/GroundTileFoliage2/HoverArea2D"]
+polygon = PackedVector2Array(1, 249, 74, 287, -2, 323, -74, 289)
+
+[node name="HoverPolygon2D" type="Polygon2D" parent="Env/GroundTileFoliage2/HoverArea2D"]
+visible = false
+z_index = 2
+color = Color(1, 0.769982, 0.163756, 0.51)
+polygon = PackedVector2Array(1, 249, 74, 287, -3, 323, -72, 289)
+
+[node name="LandingSound" type="AudioStreamPlayer" parent="Env/GroundTileFoliage2"]
+
+[node name="Unlockable" type="Node" parent="Env/GroundTileFoliage2"]
+
+[node name="GroundTilePorous1" type="Sprite2D" parent="Env" node_paths=PackedStringArray("land_sound")]
+y_sort_enabled = true
+position = Vector2(873, 379)
+texture = ExtResource("3_4tyib")
+script = ExtResource("3_ycc3o")
+hover_color = Color(1, 0.769982, 0.163756, 0.51)
+land_sound = NodePath("LandingSound")
+
+[node name="HoverArea2D" type="Area2D" parent="Env/GroundTilePorous1"]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Env/GroundTilePorous1/HoverArea2D"]
+polygon = PackedVector2Array(3, 246, 75, 281, 3, 317, -71, 281)
+
+[node name="HoverPolygon2D" type="Polygon2D" parent="Env/GroundTilePorous1/HoverArea2D"]
+visible = false
+z_index = 2
+color = Color(1, 0.769982, 0.163756, 0.51)
+polygon = PackedVector2Array(3, 246, 75, 282, 3, 316, -70, 281)
+
+[node name="LandingSound" type="AudioStreamPlayer" parent="Env/GroundTilePorous1"]
+
+[node name="GroundTilePorous2" type="Sprite2D" parent="Env" node_paths=PackedStringArray("land_sound")]
+y_sort_enabled = true
+position = Vector2(792, 420.5)
+texture = ExtResource("4_t4t6h")
+script = ExtResource("3_ycc3o")
+hover_color = Color(1, 0.769982, 0.163756, 0.51)
+land_sound = NodePath("LandingSound")
+
+[node name="HoverArea2D" type="Area2D" parent="Env/GroundTilePorous2"]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Env/GroundTilePorous2/HoverArea2D"]
+polygon = PackedVector2Array(2, 243.5, 75, 281, 5, 315.5, -69, 281.5)
+
+[node name="HoverPolygon2D" type="Polygon2D" parent="Env/GroundTilePorous2/HoverArea2D"]
+visible = false
+z_index = 2
+color = Color(1, 0.769982, 0.163756, 0.51)
+polygon = PackedVector2Array(3, 244.5, 75, 282, 5, 316.5, -70, 281)
+
+[node name="LandingSound" type="AudioStreamPlayer" parent="Env/GroundTilePorous2"]
+
+[node name="GroundTilePorous4" type="Sprite2D" parent="Env" node_paths=PackedStringArray("land_sound")]
+y_sort_enabled = true
+position = Vector2(716, 460)
+texture = ExtResource("3_4tyib")
+script = ExtResource("3_ycc3o")
+hover_color = Color(1, 0.769982, 0.163756, 0.51)
+land_sound = NodePath("LandingSound")
+
+[node name="HoverArea2D" type="Area2D" parent="Env/GroundTilePorous4"]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Env/GroundTilePorous4/HoverArea2D"]
+polygon = PackedVector2Array(4, 247, 75, 281, 5, 315.5, -69, 281.5)
+
+[node name="HoverPolygon2D" type="Polygon2D" parent="Env/GroundTilePorous4/HoverArea2D"]
+visible = false
+z_index = 2
+color = Color(1, 0.769982, 0.163756, 0.51)
+polygon = PackedVector2Array(4, 247, 75, 282, 5, 316.5, -70, 281)
+
+[node name="LandingSound" type="AudioStreamPlayer" parent="Env/GroundTilePorous4"]
+
+[node name="GroundTileFoliage1" type="Sprite2D" parent="Env" node_paths=PackedStringArray("land_sound")]
+visible = false
+y_sort_enabled = true
+position = Vector2(1030, 374.5)
+texture = ExtResource("6_pitld")
+script = ExtResource("3_ycc3o")
+hover_color = Color(1, 0.769982, 0.163756, 0.51)
+land_sound = NodePath("LandingSound")
+
+[node name="HoverArea2D" type="Area2D" parent="Env/GroundTileFoliage1"]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Env/GroundTileFoliage1/HoverArea2D"]
+polygon = PackedVector2Array(-1, 253, 70, 285, -5, 321, -71, 289)
+
+[node name="HoverPolygon2D" type="Polygon2D" parent="Env/GroundTileFoliage1/HoverArea2D"]
+visible = false
+z_index = 2
+color = Color(1, 0.769982, 0.163756, 0.51)
+polygon = PackedVector2Array(-1, 253, 70, 285, -4, 322, -71, 289)
+
+[node name="LandingSound" type="AudioStreamPlayer" parent="Env/GroundTileFoliage1"]
+
+[node name="Unlockable" type="Node" parent="Env/GroundTileFoliage1"]
+
+[node name="GroundTilePorous8" type="Sprite2D" parent="Env" node_paths=PackedStringArray("land_sound")]
+y_sort_enabled = true
+position = Vector2(947, 418.5)
+texture = ExtResource("4_t4t6h")
+script = ExtResource("3_ycc3o")
+hover_color = Color(1, 0.769982, 0.163756, 0.51)
+land_sound = NodePath("LandingSound")
+
+[node name="HoverArea2D" type="Area2D" parent="Env/GroundTilePorous8"]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Env/GroundTilePorous8/HoverArea2D"]
+polygon = PackedVector2Array(4, 247, 75, 281, 6, 313, -66, 280)
+
+[node name="HoverPolygon2D" type="Polygon2D" parent="Env/GroundTilePorous8/HoverArea2D"]
+visible = false
+z_index = 2
+color = Color(1, 0.769982, 0.163756, 0.51)
+polygon = PackedVector2Array(4, 247, 75, 282, 6, 314, -67, 280)
+
+[node name="LandingSound" type="AudioStreamPlayer" parent="Env/GroundTilePorous8"]
+
+[node name="GroundTilePorous3" type="Sprite2D" parent="Env" node_paths=PackedStringArray("land_sound")]
+y_sort_enabled = true
+position = Vector2(873, 456.5)
+texture = ExtResource("3_4tyib")
+script = ExtResource("3_ycc3o")
+hover_color = Color(1, 0.769982, 0.163756, 0.51)
+land_sound = NodePath("LandingSound")
+
+[node name="HoverArea2D" type="Area2D" parent="Env/GroundTilePorous3"]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Env/GroundTilePorous3/HoverArea2D"]
+polygon = PackedVector2Array(4, 247, 75, 281, 5, 315.5, -69, 281.5)
+
+[node name="HoverPolygon2D" type="Polygon2D" parent="Env/GroundTilePorous3/HoverArea2D"]
+visible = false
+z_index = 2
+color = Color(1, 0.769982, 0.163756, 0.51)
+polygon = PackedVector2Array(4, 247, 75, 282, 5, 316.5, -70, 281)
+
+[node name="LandingSound" type="AudioStreamPlayer" parent="Env/GroundTilePorous3"]
+
+[node name="GroundTilePorous9" type="Sprite2D" parent="Env" node_paths=PackedStringArray("land_sound")]
+y_sort_enabled = true
+position = Vector2(794, 496.5)
+texture = ExtResource("4_t4t6h")
+script = ExtResource("3_ycc3o")
+hover_color = Color(1, 0.769982, 0.163756, 0.51)
+land_sound = NodePath("LandingSound")
+
+[node name="HoverArea2D" type="Area2D" parent="Env/GroundTilePorous9"]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Env/GroundTilePorous9/HoverArea2D"]
+polygon = PackedVector2Array(4, 247, 75, 281, 5, 315.5, -69, 281.5)
+
+[node name="HoverPolygon2D" type="Polygon2D" parent="Env/GroundTilePorous9/HoverArea2D"]
+visible = false
+z_index = 2
+color = Color(1, 0.769982, 0.163756, 0.51)
+polygon = PackedVector2Array(4, 247, 75, 282, 5, 316.5, -70, 281)
+
+[node name="LandingSound" type="AudioStreamPlayer" parent="Env/GroundTilePorous9"]
+
+[node name="UILayer" type="CanvasLayer" parent="."]
+
+[node name="Control" type="Control" parent="UILayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+metadata/_edit_lock_ = true
+
+[node name="ProgressContainer" type="PanelContainer" parent="UILayer/Control"]
+custom_minimum_size = Vector2(300, 25)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -150.0
+offset_top = 222.0
+offset_right = 150.0
+offset_bottom = 247.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_0mgj4")
+
+[node name="PlaceProgress" type="ProgressBar" parent="UILayer/Control/ProgressContainer"]
+layout_mode = 2
+size_flags_vertical = 1
+mouse_filter = 2
+theme_override_styles/fill = SubResource("StyleBoxFlat_o3b6y")
+show_percentage = false
+
+[node name="Upgrade" type="Control" parent="UILayer/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 1480.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="UpgradePanel" type="PanelContainer" parent="UILayer/Control/Upgrade"]
+layout_mode = 0
+offset_left = 33.0
+offset_top = 271.0
+offset_right = 392.0
+offset_bottom = 820.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_yjued")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UILayer/Control/Upgrade/UpgradePanel"]
+layout_mode = 2
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="UILayer/Control/Upgrade/UpgradePanel/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="UpgradeTitleLabel" type="Label" parent="UILayer/Control/Upgrade/UpgradePanel/VBoxContainer/VBoxContainer3"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 32
+text = "Upgrade"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UILayer/Control/Upgrade/UpgradePanel/VBoxContainer/VBoxContainer3"]
+layout_mode = 2
+
+[node name="NewTileUpgrade" type="HBoxContainer" parent="UILayer/Control/Upgrade/UpgradePanel/VBoxContainer/VBoxContainer3/VBoxContainer"]
+layout_mode = 2
+
+[node name="Button" type="Button" parent="UILayer/Control/Upgrade/UpgradePanel/VBoxContainer/VBoxContainer3/VBoxContainer/NewTileUpgrade"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxFlat_llmtp")
+text = "New Tile"
+
+[node name="Cost" type="Label" parent="UILayer/Control/Upgrade/UpgradePanel/VBoxContainer/VBoxContainer3/VBoxContainer/NewTileUpgrade"]
+visible = false
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 32
+text = "20g"
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="UILayer/Control/Upgrade/UpgradePanel/VBoxContainer"]
+layout_mode = 2
+
+[node name="RestartButton" type="Button" parent="UILayer/Control/Upgrade/UpgradePanel/VBoxContainer/VBoxContainer2"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxFlat_llmtp")
+text = "Restart"
+
+[node name="Panel" type="Panel" parent="UILayer/Control"]
+material = SubResource("CanvasItemMaterial_orjv4")
+layout_mode = 0
+offset_left = 865.0
+offset_top = 803.0
+offset_right = 1036.0
+offset_bottom = 974.0
+theme_override_styles/panel = SubResource("StyleBoxTexture_oswe7")
+
+[node name="RoundTimerLabel" type="Label" parent="UILayer/Control/Panel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -69.0
+offset_top = -37.5
+offset_right = 63.0
+offset_bottom = 32.5
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(70.5, 38)
+theme_override_colors/font_color = Color(0.980392, 0.980392, 0.980392, 1)
+theme_override_font_sizes/font_size = 48
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="UILayer/Control"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 32
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 32
+
+[node name="PanelContainer" type="PanelContainer" parent="UILayer/Control/MarginContainer"]
+modulate = Color(1, 1, 1, 0.185)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_g8jkt")
+
+[node name="NinePatchRect" type="NinePatchRect" parent="UILayer/Control"]
+modulate = Color(1, 1, 1, 0.396)
+layout_mode = 0
+offset_left = 26.0
+offset_top = 21.0
+offset_right = 66.0
+offset_bottom = 61.0
+scale = Vector2(5.79223, 5.79223)
+texture = ExtResource("18_4t8k6")
+region_rect = Rect2(0, 0, 122, 102)
+patch_margin_left = 6
+patch_margin_top = 6
+
+[node name="PlaceTimer" type="Timer" parent="."]
+
+[node name="RoundTimer" type="Timer" parent="."]
+
+[node name="Rays" type="Sprite2D" parent="."]
+visible = false
+material = SubResource("ShaderMaterial_ckua5")
+position = Vector2(610.5, 302.125)
+scale = Vector2(4.77734, 598.25)
+texture = SubResource("GradientTexture1D_1u71b")

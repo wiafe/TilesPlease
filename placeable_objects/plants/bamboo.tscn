@@ -1,0 +1,63 @@
+[gd_scene load_steps=9 format=3 uid="uid://qqkelxqlaovr"]
+
+[ext_resource type="Script" path="res://placeable_objects/plants/plant_object.gd" id="1_1c8s6"]
+[ext_resource type="PackedScene" uid="uid://dl2rufgbedh11" path="res://plant.tscn" id="1_ouusl"]
+[ext_resource type="Texture2D" uid="uid://c1x02743onrpe" path="res://assets/sprites/seed1.png" id="3_j8gsv"]
+[ext_resource type="Shader" path="res://shaders/sway.gdshader" id="4_ul2pv"]
+[ext_resource type="Texture2D" uid="uid://p2so13f225ob" path="res://assets/sprites/bamboo1.png" id="5_tq3p0"]
+[ext_resource type="PackedScene" uid="uid://ddvf778j7g0cr" path="res://placeable_object.tscn" id="6_qdmi5"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_jga3n"]
+shader = ExtResource("4_ul2pv")
+shader_parameter/speed = 0.25
+shader_parameter/minStrength = 0.087
+shader_parameter/maxStrength = 0.082
+shader_parameter/strengthScale = 100.0
+shader_parameter/interval = 1.0
+shader_parameter/detail = 2.0
+shader_parameter/distortion = 1.0
+shader_parameter/heightOffset = 0.272
+shader_parameter/offset = 0.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_m7her"]
+size = Vector2(106, 85)
+
+[node name="Bamboo" type="Node2D"]
+z_index = 3
+y_sort_enabled = true
+script = ExtResource("1_1c8s6")
+
+[node name="Plant" parent="." instance=ExtResource("1_ouusl")]
+min_growth_time = 8.0
+max_growth_time = 12.0
+
+[node name="PlaceableObject" parent="." instance=ExtResource("6_qdmi5")]
+
+[node name="SeedForm" type="Sprite2D" parent="."]
+position = Vector2(-1, 296)
+offset = Vector2(1, -283)
+
+[node name="Seed1" type="Sprite2D" parent="SeedForm"]
+position = Vector2(0, -276.175)
+scale = Vector2(0.93, 0.93)
+texture = ExtResource("3_j8gsv")
+
+[node name="GrownForm" type="Sprite2D" parent="."]
+position = Vector2(0, 295)
+offset = Vector2(0, -295)
+
+[node name="Sprite" type="Sprite2D" parent="GrownForm"]
+material = SubResource("ShaderMaterial_jga3n")
+position = Vector2(1, -299)
+scale = Vector2(0.905071, 0.905071)
+texture = ExtResource("5_tq3p0")
+
+[node name="PickableArea" type="Area2D" parent="GrownForm"]
+position = Vector2(0, 2)
+collision_layer = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GrownForm/PickableArea"]
+position = Vector2(1, -42.5)
+shape = SubResource("RectangleShape2D_m7her")
+
+[node name="FormTimer" type="Timer" parent="."]

@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://ddvf778j7g0cr"]
+
+[ext_resource type="Script" path="res://scripts/placeable_object.gd" id="1_v24wl"]
+[ext_resource type="AudioStream" uid="uid://hb8uwhp6w8kn" path="res://assets/sfx/placed/placed.mp3" id="2_77yqs"]
+[ext_resource type="AudioStream" uid="uid://cw8e16t1m5fli" path="res://assets/sfx/placed/placed_2.mp3" id="2_dnwbi"]
+
+[node name="PlaceableObject" type="Node" node_paths=PackedStringArray("placed_plant_audio", "placed_trash_audio")]
+script = ExtResource("1_v24wl")
+placed_plant_audio = NodePath("PlacedPlantAudio")
+placed_trash_audio = NodePath("PlacedTrashAudio")
+
+[node name="PlacedPlantAudio" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_dnwbi")
+volume_db = -10.0
+
+[node name="PlacedTrashAudio" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_77yqs")
+volume_db = -15.0

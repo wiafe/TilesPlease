@@ -1,0 +1,17 @@
+[gd_scene load_steps=6 format=3 uid="uid://dl2rufgbedh11"]
+
+[ext_resource type="Script" path="res://placeable_objects/plants/plant.gd" id="1_kgroh"]
+[ext_resource type="AudioStream" uid="uid://dqjr5xb5ftr7c" path="res://assets/sfx/plant/harvest.mp3" id="2_6nr67"]
+[ext_resource type="AudioStream" uid="uid://cpcb7jl7l4kb8" path="res://assets/sfx/plant/harvest_2.mp3" id="3_j0ow2"]
+[ext_resource type="AudioStream" uid="uid://wtc43en14m3j" path="res://assets/sfx/plant/harvest_3.mp3" id="4_duo0i"]
+[ext_resource type="AudioStream" uid="uid://bo4i7d2nx3cmf" path="res://assets/sfx/plant/harvest_4.mp3" id="5_1kanc"]
+
+[node name="Plant" type="Node" node_paths=PackedStringArray("harvest_audio")]
+script = ExtResource("1_kgroh")
+harvest_audio = NodePath("HarvestedAudio")
+harvest_sounds = Array[AudioStream]([ExtResource("2_6nr67"), ExtResource("3_j0ow2"), ExtResource("4_duo0i"), ExtResource("5_1kanc")])
+min_growth_time = 2.0
+max_growth_time = 4.0
+
+[node name="HarvestedAudio" type="AudioStreamPlayer" parent="."]
+volume_db = -10.0
