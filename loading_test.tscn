@@ -1,0 +1,141 @@
+[gd_scene load_steps=9 format=3 uid="uid://bte1l4s0vgnep"]
+
+[ext_resource type="Shader" path="res://shaders/stars.gdshader" id="1_obef2"]
+[ext_resource type="Texture2D" uid="uid://dfw31oi5mnc5e" path="res://assets/fireworks.png" id="2_yml2i"]
+[ext_resource type="Script" path="res://fireworks.gd" id="3_5weko"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_l0fwm"]
+shader = ExtResource("1_obef2")
+shader_parameter/bg_color = Color(0.0705882, 0.0705882, 0.0705882, 1)
+shader_parameter/small_star_color = Color(1, 1, 1, 1)
+shader_parameter/medium_star_color = Color(0.991125, 0.799778, 0.919463, 1)
+shader_parameter/big_star_color = Color(0.970858, 0.897107, 0.370576, 1)
+shader_parameter/offset = null
+shader_parameter/bigStarSlow = 0.2
+shader_parameter/mediumStarSlow = 0.5
+shader_parameter/smallStarSlow = 1.0
+shader_parameter/smallStarAmount = 0.001
+shader_parameter/mediumStarAmount = 0.005
+shader_parameter/bigStarAmount = 0.009
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rof1t"]
+bg_color = Color(1, 1, 1, 1)
+
+[sub_resource type="Animation" id="Animation_61ibj"]
+resource_name = "play_firework"
+length = 0.5
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [Vector2i(0, 0), Vector2i(1, 0), Vector2i(2, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_vvwof"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [Vector2i(0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_nvslt"]
+_data = {
+"RESET": SubResource("Animation_vvwof"),
+"play_firework": SubResource("Animation_61ibj")
+}
+
+[node name="LoadingTest" type="Node2D"]
+
+[node name="BackgroundLayer" type="CanvasLayer" parent="."]
+layer = -1
+follow_viewport_enabled = true
+
+[node name="ColorRect" type="ColorRect" parent="BackgroundLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -760.0
+offset_top = -803.0
+offset_right = -760.0
+offset_bottom = -803.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(2.5, 2.5)
+mouse_filter = 2
+color = Color(0.0705882, 0.0705882, 0.0705882, 1)
+
+[node name="Stars" type="ColorRect" parent="BackgroundLayer"]
+show_behind_parent = true
+material = SubResource("ShaderMaterial_l0fwm")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -759.0
+offset_top = -807.0
+offset_right = -759.0
+offset_bottom = -807.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(2.5, 2.5)
+mouse_filter = 2
+color = Color(1, 1, 1, 0)
+
+[node name="ProgressBar" type="ProgressBar" parent="BackgroundLayer"]
+custom_minimum_size = Vector2(0, 32)
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -24.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/fill = SubResource("StyleBoxFlat_rof1t")
+value = 10.08
+show_percentage = false
+
+[node name="Label" type="Label" parent="BackgroundLayer"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -95.0
+offset_top = 78.0
+offset_right = 17.0
+offset_bottom = 108.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(55, 17)
+theme_override_font_sizes/font_size = 24
+text = "Loading..."
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Fireworks" type="Sprite2D" parent="."]
+position = Vector2(928, 504)
+texture = ExtResource("2_yml2i")
+offset = Vector2(-4, 293)
+hframes = 3
+script = ExtResource("3_5weko")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Fireworks"]
+libraries = {
+"": SubResource("AnimationLibrary_nvslt")
+}
+speed_scale = 1.04
