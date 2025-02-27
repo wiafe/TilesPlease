@@ -1,26 +1,21 @@
-[gd_scene load_steps=39 format=3 uid="uid://ot1h7twgf8m5"]
+[gd_scene load_steps=36 format=3 uid="uid://ot1h7twgf8m5"]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_hmemt"]
 [ext_resource type="Texture2D" uid="uid://ixytqrvaghsn" path="res://assets/sprites/cloud1.png" id="2_5kvn5"]
 [ext_resource type="AudioStream" uid="uid://bjyhjl4ftl8t1" path="res://assets/sfx/ambience/draper_sfx_north_wales_evening_thunder_storm_sparrows_rain_becoming_heavier.mp3" id="2_q30dh"]
 [ext_resource type="AudioStream" uid="uid://c6644ltbmycaw" path="res://assets/sfx/ambience/PMSFX_RAINVege_RAIN_LIGHT_DRIZLE_DRIPPY_18MRRAT_2441.mp3" id="2_q60dw"]
-[ext_resource type="Texture2D" uid="uid://8k17pq5s6pep" path="res://assets/sprites/ground_tile_porous1.png" id="3_4tyib"]
 [ext_resource type="Texture2D" uid="uid://dfdpjhri6eic6" path="res://assets/sprites/cloud2.png" id="3_cgns7"]
-[ext_resource type="Script" path="res://scripts/ground_tile.gd" id="3_ycc3o"]
 [ext_resource type="Shader" path="res://shaders/rain.gdshader" id="4_0g4qk"]
 [ext_resource type="AudioStream" uid="uid://c6wvhs3jghy0c" path="res://assets/sfx/music/music_kulluh_Star_Chasers_005.mp3" id="4_43euw"]
-[ext_resource type="Texture2D" uid="uid://b2a8lqhw4dnsa" path="res://assets/sprites/ground_tile_porous2.png" id="4_t4t6h"]
 [ext_resource type="Texture2D" uid="uid://lp7hd12ip0np" path="res://assets/sprites/cloud3.png" id="4_ufish"]
 [ext_resource type="Texture2D" uid="uid://bm1psd4wtsutd" path="res://assets/sprites/cloud4.png" id="5_56b34"]
-[ext_resource type="Texture2D" uid="uid://pmx81j57qnqy" path="res://assets/sprites/ground_tile_foliage2.png" id="5_o1t1q"]
 [ext_resource type="Shader" path="res://shaders/sway_outline.gdshader" id="6_6bv4m"]
-[ext_resource type="Texture2D" uid="uid://q1b48cjqtbyx" path="res://assets/sprites/ground_tile_foliage1.png" id="6_pitld"]
 [ext_resource type="Shader" path="res://shaders/stars.gdshader" id="6_v0bea"]
 [ext_resource type="Shader" path="res://shaders/god_rays.gdshader" id="11_7lido"]
 [ext_resource type="Texture2D" uid="uid://cosjnbmc1mi66" path="res://assets/ui/individual_Frame 2.png" id="12_7pk4a"]
+[ext_resource type="PackedScene" uid="uid://braxq671b7gho" path="res://env.tscn" id="12_v4vyy"]
 [ext_resource type="Texture2D" uid="uid://cksbup34hn3og" path="res://assets/ui/container_52.png" id="17_la1hk"]
 [ext_resource type="Texture2D" uid="uid://cm8xd17l3ejox" path="res://assets/ui/individual-21.png" id="18_4t8k6"]
-[ext_resource type="Shader" path="res://shaders/blotchy_aura.gdshader" id="20_1lr8p"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_rebb7"]
 shader = ExtResource("6_v0bea")
@@ -35,6 +30,65 @@ shader_parameter/smallStarSlow = 1.0
 shader_parameter/smallStarAmount = 0.001
 shader_parameter/mediumStarAmount = 0.005
 shader_parameter/bigStarAmount = 0.009
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ckua5"]
+shader = ExtResource("11_7lido")
+shader_parameter/angle = 0.315
+shader_parameter/position = 0.28
+shader_parameter/spread = 0.0
+shader_parameter/cutoff = 1.0
+shader_parameter/falloff = 1.0
+shader_parameter/edge_fade = 1.0
+shader_parameter/speed = 1.19
+shader_parameter/ray1_density = 10.72
+shader_parameter/ray2_density = 29.085
+shader_parameter/ray2_intensity = 0.29
+shader_parameter/color = Color(1, 1, 1, 0.631)
+shader_parameter/hdr = true
+shader_parameter/seed = 5.0
+
+[sub_resource type="Gradient" id="Gradient_onmpc"]
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_1u71b"]
+gradient = SubResource("Gradient_onmpc")
+
+[sub_resource type="Animation" id="Animation_yod2p"]
+resource_name = "ray_start"
+length = 1.1
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:material:shader_parameter/cutoff")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.6, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [1.0, 4.75e-08, -0.043]
+}
+
+[sub_resource type="Animation" id="Animation_nsnuv"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:material:shader_parameter/cutoff")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_d3upo"]
+_data = {
+"RESET": SubResource("Animation_nsnuv"),
+"ray_start": SubResource("Animation_yod2p")
+}
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_qrtj6"]
 shader = ExtResource("6_6bv4m")
@@ -122,15 +176,6 @@ shader_parameter/base_rain_speed = 0.467
 shader_parameter/additional_rain_speed = 0.243
 shader_parameter/slant = 0.2
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_ujhme"]
-shader = ExtResource("20_1lr8p")
-shader_parameter/maxLineWidth = 4.0
-shader_parameter/minLineWidth = 1.0
-shader_parameter/speed = 4.0
-shader_parameter/blockSize = 20.0
-shader_parameter/color = Color(1, 1, 1, 1)
-shader_parameter/tolerance = 0.0
-
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0mgj4"]
 content_margin_left = 4.0
 content_margin_top = 4.0
@@ -167,27 +212,6 @@ texture_margin_right = 200.0
 texture_margin_bottom = 200.0
 region_rect = Rect2(0, 0, 360, 360)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_ckua5"]
-shader = ExtResource("11_7lido")
-shader_parameter/angle = -0.375
-shader_parameter/position = -0.075
-shader_parameter/spread = 0.061
-shader_parameter/cutoff = -0.108
-shader_parameter/falloff = 1.0
-shader_parameter/edge_fade = 0.996
-shader_parameter/speed = 1.0
-shader_parameter/ray1_density = 9.82
-shader_parameter/ray2_density = 27.505
-shader_parameter/ray2_intensity = 0.291
-shader_parameter/color = Color(1, 1, 1, 0.197)
-shader_parameter/hdr = true
-shader_parameter/seed = 5.0
-
-[sub_resource type="Gradient" id="Gradient_onmpc"]
-
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_1u71b"]
-gradient = SubResource("Gradient_onmpc")
-
 [node name="Main" type="Node2D" node_paths=PackedStringArray("tiles_node", "place_progress", "place_timer", "round_timer_label", "round_timer", "upgrade_container", "clouds_node", "main_camera", "upgrade_camera", "background_layer")]
 script = ExtResource("1_hmemt")
 tiles_node = NodePath("Env")
@@ -197,8 +221,8 @@ round_timer_label = NodePath("UILayer/Control/Panel/RoundTimerLabel")
 round_timer = NodePath("RoundTimer")
 upgrade_container = NodePath("UILayer/Control/Upgrade")
 clouds_node = NodePath("Clouds")
-main_camera = NodePath("MainCamera")
-upgrade_camera = NodePath("UpgradeCamera")
+main_camera = NodePath("Cameras/MainCamera")
+upgrade_camera = NodePath("Cameras/UpgradeCamera")
 background_layer = NodePath("BackgroundLayer")
 
 [node name="Audio" type="Node" parent="."]
@@ -244,10 +268,10 @@ material = SubResource("ShaderMaterial_rebb7")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -759.0
-offset_top = -807.0
-offset_right = -759.0
-offset_bottom = -807.0
+offset_left = -4695.0
+offset_top = -3847.0
+offset_right = -1546.0
+offset_bottom = -1415.0
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(2.5, 2.5)
@@ -257,27 +281,51 @@ color = Color(1, 1, 1, 0)
 [node name="Clouds" type="Node2D" parent="."]
 position = Vector2(913, 263)
 
+[node name="Rays" type="Sprite2D" parent="Clouds"]
+show_behind_parent = true
+material = SubResource("ShaderMaterial_ckua5")
+position = Vector2(53, 150)
+scale = Vector2(2.89063, 598.25)
+texture = SubResource("GradientTexture1D_1u71b")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Clouds/Rays"]
+libraries = {
+"": SubResource("AnimationLibrary_d3upo")
+}
+
 [node name="Cloud" type="Sprite2D" parent="Clouds"]
 material = SubResource("ShaderMaterial_qrtj6")
-position = Vector2(-123, 224.5)
+position = Vector2(-123, 152)
+scale = Vector2(0.910908, 0.910908)
 texture = ExtResource("2_5kvn5")
 
 [node name="Cloud4" type="Sprite2D" parent="Clouds"]
 material = SubResource("ShaderMaterial_jqoi2")
-position = Vector2(217, 235.5)
+position = Vector2(236, 141)
+scale = Vector2(0.835871, 0.835871)
 texture = ExtResource("5_56b34")
 
 [node name="Cloud2" type="Sprite2D" parent="Clouds"]
 material = SubResource("ShaderMaterial_g0qq2")
-position = Vector2(77, 207.5)
+position = Vector2(58, 180)
+rotation = -0.0189306
+scale = Vector2(0.938943, 0.938943)
 texture = ExtResource("3_cgns7")
 
 [node name="Cloud3" type="Sprite2D" parent="Clouds"]
 material = SubResource("ShaderMaterial_tp5du")
-position = Vector2(-70, 201.5)
+position = Vector2(176, 246)
+rotation = 0.023066
 texture = ExtResource("4_ufish")
 
+[node name="Cloud5" type="Sprite2D" parent="Clouds"]
+material = SubResource("ShaderMaterial_jqoi2")
+position = Vector2(-145, 213)
+scale = Vector2(0.835871, 0.835871)
+texture = ExtResource("5_56b34")
+
 [node name="Rain" type="ColorRect" parent="Clouds"]
+visible = false
 show_behind_parent = true
 material = SubResource("ShaderMaterial_v6qgr")
 anchors_preset = 8
@@ -294,399 +342,7 @@ grow_vertical = 2
 mouse_filter = 2
 color = Color(1, 1, 1, 0)
 
-[node name="Env" type="Node2D" parent="."]
-y_sort_enabled = true
-position = Vector2(153, -155)
-
-[node name="GroundTileFoliage4" type="Sprite2D" parent="Env" node_paths=PackedStringArray("land_sound")]
-y_sort_enabled = true
-material = SubResource("ShaderMaterial_ujhme")
-position = Vector2(796, 259)
-texture = ExtResource("4_t4t6h")
-script = ExtResource("3_ycc3o")
-hover_color = Color(1, 0.769982, 0.163756, 0.51)
-land_sound = NodePath("LandingSound")
-
-[node name="HoverArea2D" type="Area2D" parent="Env/GroundTileFoliage4"]
-
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Env/GroundTileFoliage4/HoverArea2D"]
-polygon = PackedVector2Array(2, 244, 72, 282, 4, 318, -69, 282)
-
-[node name="HoverPolygon2D" type="Polygon2D" parent="Env/GroundTileFoliage4/HoverArea2D"]
-visible = false
-z_index = 2
-color = Color(1, 0.769982, 0.163756, 0.51)
-polygon = PackedVector2Array(2, 244, 72, 281, 5, 317, -70, 283)
-
-[node name="LandingSound" type="AudioStreamPlayer" parent="Env/GroundTileFoliage4"]
-
-[node name="Unlockable" type="Node" parent="Env/GroundTileFoliage4"]
-
-[node name="GroundTileFoliage5" type="Sprite2D" parent="Env" node_paths=PackedStringArray("land_sound")]
-y_sort_enabled = true
-material = SubResource("ShaderMaterial_ujhme")
-position = Vector2(715, 301)
-texture = ExtResource("4_t4t6h")
-script = ExtResource("3_ycc3o")
-hover_color = Color(1, 0.769982, 0.163756, 0.51)
-land_sound = NodePath("LandingSound")
-
-[node name="HoverArea2D" type="Area2D" parent="Env/GroundTileFoliage5"]
-
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Env/GroundTileFoliage5/HoverArea2D"]
-polygon = PackedVector2Array(2, 244, 72, 282, 4, 318, -69, 282)
-
-[node name="HoverPolygon2D" type="Polygon2D" parent="Env/GroundTileFoliage5/HoverArea2D"]
-visible = false
-z_index = 2
-color = Color(1, 0.769982, 0.163756, 0.51)
-polygon = PackedVector2Array(2, 244, 72, 281, 5, 317, -70, 283)
-
-[node name="LandingSound" type="AudioStreamPlayer" parent="Env/GroundTileFoliage5"]
-
-[node name="Unlockable" type="Node" parent="Env/GroundTileFoliage5"]
-
-[node name="GroundTileFoliage6" type="Sprite2D" parent="Env" node_paths=PackedStringArray("land_sound")]
-y_sort_enabled = true
-material = SubResource("ShaderMaterial_ujhme")
-position = Vector2(638, 344)
-texture = ExtResource("4_t4t6h")
-script = ExtResource("3_ycc3o")
-hover_color = Color(1, 0.769982, 0.163756, 0.51)
-land_sound = NodePath("LandingSound")
-
-[node name="HoverArea2D" type="Area2D" parent="Env/GroundTileFoliage6"]
-
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Env/GroundTileFoliage6/HoverArea2D"]
-polygon = PackedVector2Array(2, 244, 72, 282, 4, 318, -69, 282)
-
-[node name="HoverPolygon2D" type="Polygon2D" parent="Env/GroundTileFoliage6/HoverArea2D"]
-visible = false
-z_index = 2
-color = Color(1, 0.769982, 0.163756, 0.51)
-polygon = PackedVector2Array(2, 244, 72, 281, 5, 317, -70, 283)
-
-[node name="LandingSound" type="AudioStreamPlayer" parent="Env/GroundTileFoliage6"]
-
-[node name="Unlockable" type="Node" parent="Env/GroundTileFoliage6"]
-
-[node name="GroundTileFoliage7" type="Sprite2D" parent="Env" node_paths=PackedStringArray("land_sound")]
-y_sort_enabled = true
-material = SubResource("ShaderMaterial_ujhme")
-position = Vector2(552, 384)
-texture = ExtResource("4_t4t6h")
-script = ExtResource("3_ycc3o")
-hover_color = Color(1, 0.769982, 0.163756, 0.51)
-land_sound = NodePath("LandingSound")
-
-[node name="HoverArea2D" type="Area2D" parent="Env/GroundTileFoliage7"]
-
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Env/GroundTileFoliage7/HoverArea2D"]
-polygon = PackedVector2Array(2, 244, 72, 282, 4, 318, -69, 282)
-
-[node name="HoverPolygon2D" type="Polygon2D" parent="Env/GroundTileFoliage7/HoverArea2D"]
-visible = false
-z_index = 2
-color = Color(1, 0.769982, 0.163756, 0.51)
-polygon = PackedVector2Array(2, 244, 72, 281, 5, 317, -70, 283)
-
-[node name="LandingSound" type="AudioStreamPlayer" parent="Env/GroundTileFoliage7"]
-
-[node name="Unlockable" type="Node" parent="Env/GroundTileFoliage7"]
-
-[node name="GroundTileFoliage3" type="Sprite2D" parent="Env" node_paths=PackedStringArray("land_sound")]
-y_sort_enabled = true
-material = SubResource("ShaderMaterial_ujhme")
-position = Vector2(879, 293)
-texture = ExtResource("5_o1t1q")
-script = ExtResource("3_ycc3o")
-hover_color = Color(1, 0.769982, 0.163756, 0.51)
-land_sound = NodePath("LandingSound")
-
-[node name="HoverArea2D" type="Area2D" parent="Env/GroundTileFoliage3"]
-
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Env/GroundTileFoliage3/HoverArea2D"]
-polygon = PackedVector2Array(1, 248, 70, 286, -2, 325, -76, 290)
-
-[node name="HoverPolygon2D" type="Polygon2D" parent="Env/GroundTileFoliage3/HoverArea2D"]
-visible = false
-z_index = 2
-color = Color(1, 0.769982, 0.163756, 0.51)
-polygon = PackedVector2Array(1, 248, 70, 286, -3, 324, -75, 289)
-
-[node name="LandingSound" type="AudioStreamPlayer" parent="Env/GroundTileFoliage3"]
-
-[node name="Unlockable" type="Node" parent="Env/GroundTileFoliage3"]
-
-[node name="GroundTilePorous7" type="Sprite2D" parent="Env" node_paths=PackedStringArray("land_sound")]
-y_sort_enabled = true
-material = SubResource("ShaderMaterial_ujhme")
-position = Vector2(796, 340)
-texture = ExtResource("3_4tyib")
-script = ExtResource("3_ycc3o")
-hover_color = Color(1, 0.769982, 0.163756, 0.51)
-land_sound = NodePath("LandingSound")
-
-[node name="HoverArea2D" type="Area2D" parent="Env/GroundTilePorous7"]
-
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Env/GroundTilePorous7/HoverArea2D"]
-polygon = PackedVector2Array(4, 245, 76, 281, 0, 319, -71, 281)
-
-[node name="HoverPolygon2D" type="Polygon2D" parent="Env/GroundTilePorous7/HoverArea2D"]
-visible = false
-z_index = 2
-color = Color(1, 0.769982, 0.163756, 0.51)
-polygon = PackedVector2Array(3, 246, 76, 282, 1, 318, -72, 281)
-
-[node name="LandingSound" type="AudioStreamPlayer" parent="Env/GroundTilePorous7"]
-
-[node name="GroundTilePorous6" type="Sprite2D" parent="Env" node_paths=PackedStringArray("land_sound")]
-y_sort_enabled = true
-material = SubResource("ShaderMaterial_ujhme")
-position = Vector2(715, 383)
-texture = ExtResource("3_4tyib")
-script = ExtResource("3_ycc3o")
-hover_color = Color(1, 0.769982, 0.163756, 0.51)
-land_sound = NodePath("LandingSound")
-
-[node name="HoverArea2D" type="Area2D" parent="Env/GroundTilePorous6"]
-
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Env/GroundTilePorous6/HoverArea2D"]
-polygon = PackedVector2Array(4, 245, 76, 281, 0, 319, -71, 281)
-
-[node name="HoverPolygon2D" type="Polygon2D" parent="Env/GroundTilePorous6/HoverArea2D"]
-visible = false
-z_index = 2
-color = Color(1, 0.769982, 0.163756, 0.51)
-polygon = PackedVector2Array(3, 246, 76, 282, 1, 318, -72, 281)
-
-[node name="LandingSound" type="AudioStreamPlayer" parent="Env/GroundTilePorous6"]
-
-[node name="GroundTilePorous5" type="Sprite2D" parent="Env" node_paths=PackedStringArray("land_sound")]
-y_sort_enabled = true
-material = SubResource("ShaderMaterial_ujhme")
-position = Vector2(635, 421)
-texture = ExtResource("3_4tyib")
-script = ExtResource("3_ycc3o")
-hover_color = Color(1, 0.769982, 0.163756, 0.51)
-land_sound = NodePath("LandingSound")
-
-[node name="HoverArea2D" type="Area2D" parent="Env/GroundTilePorous5"]
-
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Env/GroundTilePorous5/HoverArea2D"]
-polygon = PackedVector2Array(2, 243.5, 75, 281, 5, 315.5, -69, 281.5)
-
-[node name="HoverPolygon2D" type="Polygon2D" parent="Env/GroundTilePorous5/HoverArea2D"]
-visible = false
-z_index = 2
-color = Color(1, 0.769982, 0.163756, 0.51)
-polygon = PackedVector2Array(3, 244.5, 75, 282, 5, 316.5, -70, 281)
-
-[node name="LandingSound" type="AudioStreamPlayer" parent="Env/GroundTilePorous5"]
-
-[node name="GroundTileFoliage2" type="Sprite2D" parent="Env" node_paths=PackedStringArray("land_sound")]
-y_sort_enabled = true
-material = SubResource("ShaderMaterial_ujhme")
-position = Vector2(954, 333)
-texture = ExtResource("5_o1t1q")
-script = ExtResource("3_ycc3o")
-hover_color = Color(1, 0.769982, 0.163756, 0.51)
-land_sound = NodePath("LandingSound")
-
-[node name="HoverArea2D" type="Area2D" parent="Env/GroundTileFoliage2"]
-
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Env/GroundTileFoliage2/HoverArea2D"]
-polygon = PackedVector2Array(1, 249, 74, 287, -2, 323, -74, 289)
-
-[node name="HoverPolygon2D" type="Polygon2D" parent="Env/GroundTileFoliage2/HoverArea2D"]
-visible = false
-z_index = 2
-color = Color(1, 0.769982, 0.163756, 0.51)
-polygon = PackedVector2Array(1, 249, 74, 287, -3, 323, -72, 289)
-
-[node name="LandingSound" type="AudioStreamPlayer" parent="Env/GroundTileFoliage2"]
-
-[node name="Unlockable" type="Node" parent="Env/GroundTileFoliage2"]
-
-[node name="GroundTilePorous1" type="Sprite2D" parent="Env" node_paths=PackedStringArray("land_sound")]
-y_sort_enabled = true
-material = SubResource("ShaderMaterial_ujhme")
-position = Vector2(873, 379)
-texture = ExtResource("3_4tyib")
-script = ExtResource("3_ycc3o")
-hover_color = Color(1, 0.769982, 0.163756, 0.51)
-land_sound = NodePath("LandingSound")
-
-[node name="HoverArea2D" type="Area2D" parent="Env/GroundTilePorous1"]
-
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Env/GroundTilePorous1/HoverArea2D"]
-polygon = PackedVector2Array(3, 246, 75, 281, 3, 317, -71, 281)
-
-[node name="HoverPolygon2D" type="Polygon2D" parent="Env/GroundTilePorous1/HoverArea2D"]
-visible = false
-z_index = 2
-color = Color(1, 0.769982, 0.163756, 0.51)
-polygon = PackedVector2Array(3, 246, 75, 282, 3, 316, -70, 281)
-
-[node name="LandingSound" type="AudioStreamPlayer" parent="Env/GroundTilePorous1"]
-
-[node name="GroundTilePorous2" type="Sprite2D" parent="Env" node_paths=PackedStringArray("land_sound")]
-y_sort_enabled = true
-material = SubResource("ShaderMaterial_ujhme")
-position = Vector2(792, 420.5)
-texture = ExtResource("4_t4t6h")
-script = ExtResource("3_ycc3o")
-hover_color = Color(1, 0.769982, 0.163756, 0.51)
-land_sound = NodePath("LandingSound")
-
-[node name="HoverArea2D" type="Area2D" parent="Env/GroundTilePorous2"]
-
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Env/GroundTilePorous2/HoverArea2D"]
-polygon = PackedVector2Array(2, 243.5, 75, 281, 5, 315.5, -69, 281.5)
-
-[node name="HoverPolygon2D" type="Polygon2D" parent="Env/GroundTilePorous2/HoverArea2D"]
-visible = false
-z_index = 2
-color = Color(1, 0.769982, 0.163756, 0.51)
-polygon = PackedVector2Array(3, 244.5, 75, 282, 5, 316.5, -70, 281)
-
-[node name="LandingSound" type="AudioStreamPlayer" parent="Env/GroundTilePorous2"]
-
-[node name="GroundTilePorous4" type="Sprite2D" parent="Env" node_paths=PackedStringArray("land_sound")]
-y_sort_enabled = true
-material = SubResource("ShaderMaterial_ujhme")
-position = Vector2(716, 460)
-texture = ExtResource("3_4tyib")
-script = ExtResource("3_ycc3o")
-hover_color = Color(1, 0.769982, 0.163756, 0.51)
-land_sound = NodePath("LandingSound")
-
-[node name="HoverArea2D" type="Area2D" parent="Env/GroundTilePorous4"]
-
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Env/GroundTilePorous4/HoverArea2D"]
-polygon = PackedVector2Array(4, 247, 75, 281, 5, 315.5, -69, 281.5)
-
-[node name="HoverPolygon2D" type="Polygon2D" parent="Env/GroundTilePorous4/HoverArea2D"]
-visible = false
-z_index = 2
-color = Color(1, 0.769982, 0.163756, 0.51)
-polygon = PackedVector2Array(4, 247, 75, 282, 5, 316.5, -70, 281)
-
-[node name="LandingSound" type="AudioStreamPlayer" parent="Env/GroundTilePorous4"]
-
-[node name="GroundTileFoliage1" type="Sprite2D" parent="Env" node_paths=PackedStringArray("land_sound")]
-y_sort_enabled = true
-material = SubResource("ShaderMaterial_ujhme")
-position = Vector2(1030, 374.5)
-texture = ExtResource("6_pitld")
-script = ExtResource("3_ycc3o")
-hover_color = Color(1, 0.769982, 0.163756, 0.51)
-land_sound = NodePath("LandingSound")
-
-[node name="HoverArea2D" type="Area2D" parent="Env/GroundTileFoliage1"]
-
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Env/GroundTileFoliage1/HoverArea2D"]
-polygon = PackedVector2Array(-1, 253, 70, 285, -5, 321, -71, 289)
-
-[node name="HoverPolygon2D" type="Polygon2D" parent="Env/GroundTileFoliage1/HoverArea2D"]
-visible = false
-z_index = 2
-color = Color(1, 0.769982, 0.163756, 0.51)
-polygon = PackedVector2Array(-1, 253, 70, 285, -4, 322, -71, 289)
-
-[node name="LandingSound" type="AudioStreamPlayer" parent="Env/GroundTileFoliage1"]
-
-[node name="Unlockable" type="Node" parent="Env/GroundTileFoliage1"]
-
-[node name="GroundTileFoliage8" type="Sprite2D" parent="Env" node_paths=PackedStringArray("land_sound")]
-y_sort_enabled = true
-material = SubResource("ShaderMaterial_ujhme")
-position = Vector2(721, 534)
-texture = ExtResource("6_pitld")
-script = ExtResource("3_ycc3o")
-hover_color = Color(1, 0.769982, 0.163756, 0.51)
-land_sound = NodePath("LandingSound")
-
-[node name="HoverArea2D" type="Area2D" parent="Env/GroundTileFoliage8"]
-
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Env/GroundTileFoliage8/HoverArea2D"]
-polygon = PackedVector2Array(-1, 253, 70, 285, -5, 321, -71, 289)
-
-[node name="HoverPolygon2D" type="Polygon2D" parent="Env/GroundTileFoliage8/HoverArea2D"]
-visible = false
-z_index = 2
-color = Color(1, 0.769982, 0.163756, 0.51)
-polygon = PackedVector2Array(-1, 253, 70, 285, -4, 322, -71, 289)
-
-[node name="LandingSound" type="AudioStreamPlayer" parent="Env/GroundTileFoliage8"]
-
-[node name="Unlockable" type="Node" parent="Env/GroundTileFoliage8"]
-
-[node name="GroundTilePorous8" type="Sprite2D" parent="Env" node_paths=PackedStringArray("land_sound")]
-y_sort_enabled = true
-material = SubResource("ShaderMaterial_ujhme")
-position = Vector2(947, 418.5)
-texture = ExtResource("4_t4t6h")
-script = ExtResource("3_ycc3o")
-hover_color = Color(1, 0.769982, 0.163756, 0.51)
-land_sound = NodePath("LandingSound")
-
-[node name="HoverArea2D" type="Area2D" parent="Env/GroundTilePorous8"]
-
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Env/GroundTilePorous8/HoverArea2D"]
-polygon = PackedVector2Array(4, 247, 75, 281, 6, 313, -66, 280)
-
-[node name="HoverPolygon2D" type="Polygon2D" parent="Env/GroundTilePorous8/HoverArea2D"]
-visible = false
-z_index = 2
-color = Color(1, 0.769982, 0.163756, 0.51)
-polygon = PackedVector2Array(4, 247, 75, 282, 6, 314, -67, 280)
-
-[node name="LandingSound" type="AudioStreamPlayer" parent="Env/GroundTilePorous8"]
-
-[node name="GroundTilePorous3" type="Sprite2D" parent="Env" node_paths=PackedStringArray("land_sound")]
-y_sort_enabled = true
-material = SubResource("ShaderMaterial_ujhme")
-position = Vector2(873, 456.5)
-texture = ExtResource("3_4tyib")
-script = ExtResource("3_ycc3o")
-hover_color = Color(1, 0.769982, 0.163756, 0.51)
-land_sound = NodePath("LandingSound")
-
-[node name="HoverArea2D" type="Area2D" parent="Env/GroundTilePorous3"]
-
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Env/GroundTilePorous3/HoverArea2D"]
-polygon = PackedVector2Array(4, 247, 75, 281, 5, 315.5, -69, 281.5)
-
-[node name="HoverPolygon2D" type="Polygon2D" parent="Env/GroundTilePorous3/HoverArea2D"]
-visible = false
-z_index = 2
-color = Color(1, 0.769982, 0.163756, 0.51)
-polygon = PackedVector2Array(4, 247, 75, 282, 5, 316.5, -70, 281)
-
-[node name="LandingSound" type="AudioStreamPlayer" parent="Env/GroundTilePorous3"]
-
-[node name="GroundTilePorous9" type="Sprite2D" parent="Env" node_paths=PackedStringArray("land_sound")]
-y_sort_enabled = true
-material = SubResource("ShaderMaterial_ujhme")
-position = Vector2(794, 496.5)
-texture = ExtResource("4_t4t6h")
-script = ExtResource("3_ycc3o")
-hover_color = Color(1, 0.769982, 0.163756, 0.51)
-land_sound = NodePath("LandingSound")
-
-[node name="HoverArea2D" type="Area2D" parent="Env/GroundTilePorous9"]
-
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Env/GroundTilePorous9/HoverArea2D"]
-polygon = PackedVector2Array(4, 247, 75, 281, 5, 315.5, -69, 281.5)
-
-[node name="HoverPolygon2D" type="Polygon2D" parent="Env/GroundTilePorous9/HoverArea2D"]
-visible = false
-z_index = 2
-color = Color(1, 0.769982, 0.163756, 0.51)
-polygon = PackedVector2Array(4, 247, 75, 282, 5, 316.5, -70, 281)
-
-[node name="LandingSound" type="AudioStreamPlayer" parent="Env/GroundTilePorous9"]
+[node name="Env" parent="." instance=ExtResource("12_v4vyy")]
 
 [node name="UILayer" type="CanvasLayer" parent="."]
 
@@ -847,15 +503,13 @@ patch_margin_top = 6
 
 [node name="RoundTimer" type="Timer" parent="."]
 
-[node name="Rays" type="Sprite2D" parent="."]
-visible = false
-material = SubResource("ShaderMaterial_ckua5")
-position = Vector2(610.5, 302.125)
-scale = Vector2(4.77734, 598.25)
-texture = SubResource("GradientTexture1D_1u71b")
+[node name="Cameras" type="Node" parent="."]
 
-[node name="MainCamera" type="Camera2D" parent="."]
+[node name="MainCamera" type="Camera2D" parent="Cameras"]
 position = Vector2(960, 540)
 
-[node name="UpgradeCamera" type="Camera2D" parent="."]
+[node name="UpgradeCamera" type="Camera2D" parent="Cameras"]
 position = Vector2(2986, 540)
+
+[node name="MainMenuCamera" type="Camera2D" parent="Cameras"]
+position = Vector2(960, -646)
