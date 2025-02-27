@@ -15,7 +15,7 @@ extends Node2D
 
 const AUDIO_COMPENSATION = 0.35
 const PLANT_INTERVAL = 2.0
-const ROUND_DURATION = 50  # Round duration in seconds
+const ROUND_DURATION = 5  # Round duration in seconds
 const UPGRADE_PANEL_OFFSET = Vector2(0, 0)  # Amount to slide the panel
 const CAMERA_TRANSITION_DURATION = 1.0  # Duration of camera transition in seconds
 
@@ -145,13 +145,28 @@ func _on_round_end() -> void:
 
 func transition_to_camera(target_camera: Camera2D) -> void:
 	if active_camera == target_camera:
+		print("Already using this camera, skipping transition")
 		return  # Already using this camera
+	
+	print("Starting camera transition from ", active_camera.name, " to ", target_camera.name)
 	
 	# Get the global transforms
 	var current_position = active_camera.global_position
 	var target_position = target_camera.global_position
 	var current_zoom = active_camera.zoom
 	var target_zoom = target_camera.zoom
+	
+	print("Current position: ", current_position, ", Target position: ", target_position)
+	print("Current zoom: ", current_zoom, ", Target zoom: ", target_zoom)
+	
+	# Ensure both cameras are properly set up
+	if !is_instance_valid(target_camera):
+		print("ERROR: Target camera is not valid")
+		return
+		
+	if !is_instance_valid(active_camera):
+		print("ERROR: Active camera is not valid")
+		return
 	
 	# Create a temporary camera for the transition
 	var temp_camera = Camera2D.new()
@@ -164,10 +179,17 @@ func transition_to_camera(target_camera: Camera2D) -> void:
 	target_camera.enabled = false
 	temp_camera.enabled = true
 	
-	# Create a Node2D to move with the camera and handle background positioning
-	var camera_helper = Node2D.new()
+	# Create a helper to handle background positioning
+	var camera_helper = CameraTransitionHelper.new()
 	add_child(camera_helper)
 	camera_helper.global_position = current_position
+	
+	# Make sure background_layer exists
+	if background_layer:
+		camera_helper.initialize(background_layer, current_position, target_position)
+		print("Background layer found, initializing helper")
+	else:
+		print("WARNING: background_layer is null")
 	
 	# Create the tween for smooth transition
 	var tween = create_tween()
@@ -186,64 +208,16 @@ func transition_to_camera(target_camera: Camera2D) -> void:
 		.set_trans(Tween.TRANS_SINE)\
 		.set_ease(Tween.EASE_IN_OUT)
 	
-	# Update background position during transition
-	if background_layer:
-		# Calculate the offset between cameras in screen space
-		var screen_offset = (target_position - current_position)
-		
-		# Create a separate process function for the camera_helper to update background
-		camera_helper.set_process(true)
-		camera_helper.set_script(create_helper_script(current_position, target_position))
-	
-	# When finished, switch to the target camera and remove the helper objects
+	# Chain a callback to handle completion properly
 	tween.chain().tween_callback(func():
+		print("Camera transition complete")
 		temp_camera.enabled = false
 		target_camera.enabled = true
 		active_camera = target_camera
+		print("New active camera: ", active_camera.name, " (enabled: ", active_camera.enabled, ")")
 		temp_camera.queue_free()
 		camera_helper.queue_free()
 	)
-
-# Creates a temporary script for the camera helper node
-func create_helper_script(start_pos: Vector2, end_pos: Vector2) -> GDScript:
-	var script_text = """
-	extends Node2D
-	
-	var background_layer: CanvasLayer
-	var start_pos: Vector2
-	var end_pos: Vector2
-	var progress: float = 0.0
-	
-	func _ready():
-		var main_node = get_parent()
-		background_layer = main_node.background_layer
-		start_pos = %s
-		end_pos = %s
-	
-	func _process(delta):
-		if !is_instance_valid(background_layer):
-			return
-			
-		# Calculate relative progress from our position
-		var total_distance = start_pos.distance_to(end_pos)
-		if total_distance > 0:
-			var current_distance = global_position.distance_to(start_pos)
-			progress = clamp(current_distance / total_distance, 0.0, 1.0)
-		
-		# Apply position offset to background elements
-		var offset = (end_pos - start_pos) * progress
-		background_layer.offset = offset
-	"""
-	
-	# Format the script with the vector values
-	script_text = script_text % [start_pos, end_pos]
-	
-	# Create the script object
-	var script = GDScript.new()
-	script.source_code = script_text
-	script.reload()
-	
-	return script
 
 func _on_new_tile_pressed() -> void:
 	if unlockable_tiles.size() > 0:

@@ -221,8 +221,8 @@ round_timer_label = NodePath("UILayer/Control/Panel/RoundTimerLabel")
 round_timer = NodePath("RoundTimer")
 upgrade_container = NodePath("UILayer/Control/Upgrade")
 clouds_node = NodePath("Clouds")
-main_camera = NodePath("Cameras/MainCamera")
-upgrade_camera = NodePath("Cameras/UpgradeCamera")
+main_camera = NodePath("MainCamera")
+upgrade_camera = NodePath("UpgradeCamera")
 background_layer = NodePath("BackgroundLayer")
 
 [node name="Audio" type="Node" parent="."]
@@ -232,12 +232,10 @@ background_layer = NodePath("BackgroundLayer")
 [node name="BackgroundAudio" type="AudioStreamPlayer" parent="Audio"]
 stream = ExtResource("2_q60dw")
 volume_db = -10.0
-autoplay = true
 
 [node name="AmbientAudio" type="AudioStreamPlayer" parent="Audio"]
 stream = ExtResource("2_q30dh")
 volume_db = -20.0
-autoplay = true
 
 [node name="BackgroundMusicAudio" type="AudioStreamPlayer" parent="Audio"]
 stream = ExtResource("4_43euw")
@@ -503,13 +501,8 @@ patch_margin_top = 6
 
 [node name="RoundTimer" type="Timer" parent="."]
 
-[node name="Cameras" type="Node" parent="."]
-
-[node name="MainCamera" type="Camera2D" parent="Cameras"]
+[node name="MainCamera" type="Camera2D" parent="."]
 position = Vector2(960, 540)
 
-[node name="UpgradeCamera" type="Camera2D" parent="Cameras"]
+[node name="UpgradeCamera" type="Camera2D" parent="."]
 position = Vector2(2986, 540)
-
-[node name="MainMenuCamera" type="Camera2D" parent="Cameras"]
-position = Vector2(960, -646)
