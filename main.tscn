@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=3 uid="uid://ot1h7twgf8m5"]
+[gd_scene load_steps=49 format=3 uid="uid://ot1h7twgf8m5"]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_hmemt"]
 [ext_resource type="Texture2D" uid="uid://ixytqrvaghsn" path="res://assets/sprites/cloud1.png" id="2_5kvn5"]
@@ -9,13 +9,22 @@
 [ext_resource type="AudioStream" uid="uid://c6wvhs3jghy0c" path="res://assets/sfx/music/music_kulluh_Star_Chasers_005.mp3" id="4_43euw"]
 [ext_resource type="Texture2D" uid="uid://lp7hd12ip0np" path="res://assets/sprites/cloud3.png" id="4_ufish"]
 [ext_resource type="Texture2D" uid="uid://bm1psd4wtsutd" path="res://assets/sprites/cloud4.png" id="5_56b34"]
+[ext_resource type="Shader" path="res://shaders/background_2.gdshader" id="5_500gn"]
 [ext_resource type="Shader" path="res://shaders/sway_outline.gdshader" id="6_6bv4m"]
+[ext_resource type="Texture2D" uid="uid://bilhpyaol6quk" path="res://assets/ui/Stars1.png" id="6_lm5yq"]
 [ext_resource type="Shader" path="res://shaders/stars.gdshader" id="6_v0bea"]
 [ext_resource type="Shader" path="res://shaders/god_rays.gdshader" id="11_7lido"]
 [ext_resource type="Texture2D" uid="uid://cosjnbmc1mi66" path="res://assets/ui/individual_Frame 2.png" id="12_7pk4a"]
-[ext_resource type="PackedScene" uid="uid://braxq671b7gho" path="res://env.tscn" id="12_v4vyy"]
+[ext_resource type="PackedScene" uid="uid://bqy5u54smhgyb" path="res://env.tscn" id="12_v4vyy"]
+[ext_resource type="Texture2D" uid="uid://unlhwqob6pft" path="res://assets/ui/Square1.png" id="14_73efo"]
 [ext_resource type="Texture2D" uid="uid://cksbup34hn3og" path="res://assets/ui/container_52.png" id="17_la1hk"]
 [ext_resource type="Texture2D" uid="uid://cm8xd17l3ejox" path="res://assets/ui/individual-21.png" id="18_4t8k6"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3o6jt"]
+shader = ExtResource("5_500gn")
+shader_parameter/motion = Vector2(2, 2)
+shader_parameter/scale = 0.07
+shader_parameter/offset = Vector2(0, 0)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_rebb7"]
 shader = ExtResource("6_v0bea")
@@ -23,13 +32,63 @@ shader_parameter/bg_color = Color(0.0705882, 0.0705882, 0.0705882, 1)
 shader_parameter/small_star_color = Color(1, 1, 1, 1)
 shader_parameter/medium_star_color = Color(0.991125, 0.799778, 0.919463, 1)
 shader_parameter/big_star_color = Color(0.970858, 0.897107, 0.370576, 1)
-shader_parameter/offset = null
+shader_parameter/offset = Vector2(0, 0)
 shader_parameter/bigStarSlow = 0.2
 shader_parameter/mediumStarSlow = 0.5
 shader_parameter/smallStarSlow = 1.0
 shader_parameter/smallStarAmount = 0.001
 shader_parameter/mediumStarAmount = 0.005
 shader_parameter/bigStarAmount = 0.009
+
+[sub_resource type="Animation" id="Animation_dbnt8"]
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:material:shader_parameter/offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(500, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_ooi7p"]
+resource_name = "stars_move"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:material:shader_parameter/offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(500, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_fq828"]
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:material:shader_parameter/offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(500, 0), Vector2(0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ba76r"]
+_data = {
+"RESET": SubResource("Animation_dbnt8"),
+"stars_move_left": SubResource("Animation_fq828"),
+"stars_move_right": SubResource("Animation_ooi7p")
+}
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ckua5"]
 shader = ExtResource("11_7lido")
@@ -52,23 +111,6 @@ shader_parameter/seed = 5.0
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_1u71b"]
 gradient = SubResource("Gradient_onmpc")
 
-[sub_resource type="Animation" id="Animation_yod2p"]
-resource_name = "ray_start"
-length = 1.1
-loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:material:shader_parameter/cutoff")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.6, 1),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [1.0, 4.75e-08, -0.043]
-}
-
 [sub_resource type="Animation" id="Animation_nsnuv"]
 length = 0.001
 tracks/0/type = "value"
@@ -84,9 +126,29 @@ tracks/0/keys = {
 "values": [1.0]
 }
 
+[sub_resource type="Animation" id="Animation_yod2p"]
+resource_name = "ray_start"
+length = 1.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:material:shader_parameter/cutoff")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.6, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [1.0, 4.75e-08, -0.043]
+}
+
+[sub_resource type="Animation" id="Animation_a3edu"]
+resource_name = "ray_end"
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_d3upo"]
 _data = {
 "RESET": SubResource("Animation_nsnuv"),
+"ray_end": SubResource("Animation_a3edu"),
 "ray_start": SubResource("Animation_yod2p")
 }
 
@@ -164,7 +226,7 @@ shader_parameter/offset = 0.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_v6qgr"]
 shader = ExtResource("4_0g4qk")
-shader_parameter/rain_amount = 64.0
+shader_parameter/rain_amount = 100.0
 shader_parameter/near_rain_length = 0.06
 shader_parameter/far_rain_length = 0.02
 shader_parameter/near_rain_width = 0.234
@@ -176,6 +238,276 @@ shader_parameter/base_rain_speed = 0.467
 shader_parameter/additional_rain_speed = 0.243
 shader_parameter/slant = 0.2
 
+[sub_resource type="Animation" id="Animation_cp8ml"]
+resource_name = "rain_start"
+length = 0.8
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:size")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.8),
+"transitions": PackedFloat32Array(0.574349, 0.233258),
+"update": 0,
+"values": [Vector2(472, 8), Vector2(472, 401)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:material:shader_parameter/near_rain_length")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.8),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.06]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:material:shader_parameter/far_rain_length")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.8),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.01, 0.02]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".:material:shader_parameter/near_rain_width")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.8),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.1, 0.234]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath(".:material:shader_parameter/far_rain_width")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.8),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.1, 0.17]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath(".:material:shader_parameter/near_rain_transparency")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 0.8),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.1, 0.524]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath(".:material:shader_parameter/far_rain_transparency")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0, 0.8),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.1, 0.204]
+}
+
+[sub_resource type="Animation" id="Animation_dcsso"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:size")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(472, 8)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:material:shader_parameter/near_rain_length")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.06]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:material:shader_parameter/far_rain_length")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.02]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".:material:shader_parameter/near_rain_width")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.234]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath(".:material:shader_parameter/far_rain_width")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.17]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath(".:material:shader_parameter/near_rain_transparency")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.524]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath(".:material:shader_parameter/far_rain_transparency")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.204]
+}
+
+[sub_resource type="Animation" id="Animation_n1hm0"]
+resource_name = "rain_end"
+length = 0.8
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:size")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.8),
+"transitions": PackedFloat32Array(0.233258, 0.574349),
+"update": 0,
+"values": [Vector2(472, 401), Vector2(472, 8)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:material:shader_parameter/near_rain_length")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.06]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:material:shader_parameter/far_rain_length")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.8),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.02, 0.01]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".:material:shader_parameter/near_rain_width")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.8),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.234, 0.1]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath(".:material:shader_parameter/far_rain_width")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.8),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.17, 0.1]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath(".:material:shader_parameter/near_rain_transparency")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 0.8),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.524, 0.1]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath(".:material:shader_parameter/far_rain_transparency")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0, 0.8),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.204, 0.1]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_5vl2i"]
+_data = {
+"RESET": SubResource("Animation_dcsso"),
+"rain_end": SubResource("Animation_n1hm0"),
+"rain_start": SubResource("Animation_cp8ml")
+}
+
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0mgj4"]
 content_margin_left = 4.0
 content_margin_top = 4.0
@@ -185,12 +517,9 @@ content_margin_bottom = 4.0
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o3b6y"]
 bg_color = Color(1, 1, 1, 1)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yjued"]
-content_margin_left = 32.0
-content_margin_top = 32.0
-content_margin_right = 32.0
-content_margin_bottom = 32.0
-bg_color = Color(0.980392, 0.980392, 0.980392, 1)
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_7wdm2"]
+texture = ExtResource("14_73efo")
+region_rect = Rect2(261, 280, 507, 472)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_llmtp"]
 content_margin_left = 8.0
@@ -212,7 +541,7 @@ texture_margin_right = 200.0
 texture_margin_bottom = 200.0
 region_rect = Rect2(0, 0, 360, 360)
 
-[node name="Main" type="Node2D" node_paths=PackedStringArray("tiles_node", "place_progress", "place_timer", "round_timer_label", "round_timer", "upgrade_container", "clouds_node", "main_camera", "upgrade_camera", "background_layer")]
+[node name="Main" type="Node2D" node_paths=PackedStringArray("tiles_node", "place_progress", "place_timer", "round_timer_label", "round_timer", "upgrade_container", "clouds_node", "main_camera", "upgrade_camera", "background_layer", "star_animation_player", "sunray_animation_player", "rain_animation_player")]
 script = ExtResource("1_hmemt")
 tiles_node = NodePath("Env")
 place_progress = NodePath("UILayer/Control/ProgressContainer/PlaceProgress")
@@ -224,18 +553,23 @@ clouds_node = NodePath("Clouds")
 main_camera = NodePath("MainCamera")
 upgrade_camera = NodePath("UpgradeCamera")
 background_layer = NodePath("BackgroundLayer")
+star_animation_player = NodePath("BackgroundLayer/Stars/AnimationPlayer")
+sunray_animation_player = NodePath("Clouds/Rays/AnimationPlayer")
+rain_animation_player = NodePath("Clouds/Rain/AnimationPlayer")
 
 [node name="Audio" type="Node" parent="."]
 
 [node name="PlantAudio" type="AudioStreamPlayer" parent="Audio"]
 
-[node name="BackgroundAudio" type="AudioStreamPlayer" parent="Audio"]
+[node name="BackgroundRainAudio" type="AudioStreamPlayer" parent="Audio"]
 stream = ExtResource("2_q60dw")
 volume_db = -10.0
+autoplay = true
 
-[node name="AmbientAudio" type="AudioStreamPlayer" parent="Audio"]
+[node name="AmbientThunderAudio" type="AudioStreamPlayer" parent="Audio"]
 stream = ExtResource("2_q30dh")
 volume_db = -20.0
+autoplay = true
 
 [node name="BackgroundMusicAudio" type="AudioStreamPlayer" parent="Audio"]
 stream = ExtResource("4_43euw")
@@ -247,20 +581,40 @@ layer = -1
 follow_viewport_enabled = true
 
 [node name="ColorRect" type="ColorRect" parent="BackgroundLayer"]
+visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -760.0
-offset_top = -803.0
-offset_right = -760.0
-offset_bottom = -803.0
+offset_left = -3515.0
+offset_top = -3015.0
+offset_right = -959.0
+offset_bottom = -961.0
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(2.5, 2.5)
 mouse_filter = 2
 color = Color(0.0705882, 0.0705882, 0.0705882, 1)
 
+[node name="PatternBackground" type="TextureRect" parent="BackgroundLayer"]
+visible = false
+modulate = Color(1, 1, 1, 0.145098)
+material = SubResource("ShaderMaterial_3o6jt")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -3515.0
+offset_top = -3015.0
+offset_right = -1001.0
+offset_bottom = -1037.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(2.5, 2.5)
+mouse_filter = 2
+texture = ExtResource("6_lm5yq")
+stretch_mode = 1
+
 [node name="Stars" type="ColorRect" parent="BackgroundLayer"]
+visible = false
 show_behind_parent = true
 material = SubResource("ShaderMaterial_rebb7")
 anchors_preset = 15
@@ -276,10 +630,16 @@ scale = Vector2(2.5, 2.5)
 mouse_filter = 2
 color = Color(1, 1, 1, 0)
 
+[node name="AnimationPlayer" type="AnimationPlayer" parent="BackgroundLayer/Stars"]
+libraries = {
+"": SubResource("AnimationLibrary_ba76r")
+}
+
 [node name="Clouds" type="Node2D" parent="."]
 position = Vector2(913, 263)
 
 [node name="Rays" type="Sprite2D" parent="Clouds"]
+visible = false
 show_behind_parent = true
 material = SubResource("ShaderMaterial_ckua5")
 position = Vector2(53, 150)
@@ -323,7 +683,6 @@ scale = Vector2(0.835871, 0.835871)
 texture = ExtResource("5_56b34")
 
 [node name="Rain" type="ColorRect" parent="Clouds"]
-visible = false
 show_behind_parent = true
 material = SubResource("ShaderMaterial_v6qgr")
 anchors_preset = 8
@@ -334,11 +693,16 @@ anchor_bottom = 0.5
 offset_left = -205.0
 offset_top = -112.0
 offset_right = 267.0
-offset_bottom = 235.0
+offset_bottom = -104.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 color = Color(1, 1, 1, 0)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Clouds/Rain"]
+libraries = {
+"": SubResource("AnimationLibrary_5vl2i")
+}
 
 [node name="Env" parent="." instance=ExtResource("12_v4vyy")]
 
@@ -392,8 +756,8 @@ layout_mode = 0
 offset_left = 33.0
 offset_top = 271.0
 offset_right = 392.0
-offset_bottom = 820.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_yjued")
+offset_bottom = 535.0
+theme_override_styles/panel = SubResource("StyleBoxTexture_7wdm2")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="UILayer/Control/Upgrade/UpgradePanel"]
 layout_mode = 2
@@ -433,6 +797,7 @@ layout_mode = 2
 
 [node name="RestartButton" type="Button" parent="UILayer/Control/Upgrade/UpgradePanel/VBoxContainer/VBoxContainer2"]
 layout_mode = 2
+size_flags_horizontal = 4
 theme_override_font_sizes/font_size = 32
 theme_override_styles/normal = SubResource("StyleBoxFlat_llmtp")
 text = "Restart"
@@ -505,4 +870,5 @@ patch_margin_top = 6
 position = Vector2(960, 540)
 
 [node name="UpgradeCamera" type="Camera2D" parent="."]
-position = Vector2(2986, 540)
+position = Vector2(1567, 540)
+zoom = Vector2(0.7, 0.7)

@@ -19,12 +19,12 @@ var is_occupied := false
 func _ready():
 	hover_area.mouse_entered.connect(_on_area_2d_mouse_entered)
 	hover_area.mouse_exited.connect(_on_area_2d_mouse_exited)
-	
+
 	hover_polygon.z_index = 2
 	hover_polygon.visible = true  # Keep visible but start fully transparent
 	hover_polygon.color = hover_color
 	hover_polygon.modulate.a = 0  # Start fully transparent
-	
+
 	if land_sound:
 		land_sound.stream = LAND_SOUND_EFFECT_3
 		land_sound.pitch_scale = randf_range(1.0, 1.2)
@@ -48,7 +48,7 @@ func _on_area_2d_mouse_exited():
 
 func set_occupied(occupied: bool) -> void:
 	is_occupied = occupied
-	
+
 	if is_occupied:
 		hover_polygon.scale = Vector2.ZERO
 		hover_polygon.modulate.a = 0

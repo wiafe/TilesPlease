@@ -10,7 +10,7 @@ func _ready():
 func play_placed_sound():
 	if not placeable_object:
 		return
-		
+
 	if has_node("Plant"):
 		placeable_object.get_node("PlacedPlantAudio").play()
 	elif has_node("Trash"):

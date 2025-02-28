@@ -4,17 +4,20 @@
 [ext_resource type="PackedScene" uid="uid://dl2rufgbedh11" path="res://plant.tscn" id="1_l8cl4"]
 [ext_resource type="PackedScene" uid="uid://ddvf778j7g0cr" path="res://placeable_object.tscn" id="3_sqcvr"]
 [ext_resource type="Texture2D" uid="uid://c1x02743onrpe" path="res://assets/sprites/seed1.png" id="3_uej3p"]
-[ext_resource type="Shader" path="res://shaders/distortion_pixel.gdshader" id="5_5w7bi"]
+[ext_resource type="Shader" path="res://shaders/sway.gdshader" id="5_aboh6"]
 [ext_resource type="Texture2D" uid="uid://drqaga8t8cf6" path="res://assets/sprites/agave1.png" id="5_mwdqt"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_jga3n"]
-shader = ExtResource("5_5w7bi")
-shader_parameter/amplitude_x = 0.00100001
-shader_parameter/amplitude_y = 0.00100001
-shader_parameter/frequency = 7.5
+shader = ExtResource("5_aboh6")
 shader_parameter/speed = 1.495
-shader_parameter/overlay_color = Color(0.638843, 0.251451, 0.44076, 1)
-shader_parameter/texture_size = Vector2(1000, 1000)
+shader_parameter/minStrength = 0.05
+shader_parameter/maxStrength = 0.01
+shader_parameter/strengthScale = 100.0
+shader_parameter/interval = 3.5
+shader_parameter/detail = 1.0
+shader_parameter/distortion = null
+shader_parameter/heightOffset = null
+shader_parameter/offset = 0.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_m7her"]
 size = Vector2(106, 85)
