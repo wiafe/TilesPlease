@@ -32,7 +32,7 @@ const RUBBLE_SCENE = preload("res://placeable_objects/trash/rubble.tscn")
 var plant_scenes = [
 	AGAVE_SCENE,
 	BAMBOO_SCENE,
-	RUBBLE_SCENE,
+	#RUBBLE_SCENE,
 ]
 
 var currently_hovered_tile: Node = null
@@ -45,8 +45,10 @@ var round_ended := false  # Flag to track if a round has ended
 var animation_debug_count := 0  # Debug counter for animations
 var round_timer_connected := false  # Track if round timer is connected
 
+var weather_sequence_started := false
+var weather_transition_timer: Timer = null
+
 func _ready():
-	#await get_tree().process_frame
 
 	#position_window_bottom_right()
 
@@ -58,7 +60,9 @@ func _ready():
 	for tile in tiles_node.get_children():
 		if tile.has_node("Unlockable"):
 			unlockable_tiles.append(tile)
-
+	
+	tiles_node.visible = false
+	
 	# Setup round timer as one_shot
 	round_timer.wait_time = ROUND_DURATION
 	round_timer.one_shot = true  # Set to one_shot to prevent auto-repeating
@@ -83,7 +87,7 @@ func _ready():
 	main_camera.enabled = true
 	upgrade_camera.enabled = false
 	active_camera = main_camera
-
+	await get_tree().create_timer(10.0).timeout  # Waits for 1 second
 	start_game()
 
 func position_window_bottom_right():
@@ -124,6 +128,7 @@ func _disconnect_round_timer() -> void:
 		round_timer_connected = false
 
 func start_game() -> void:
+	tiles_node.visible = true
 	var original_positions = {}
 	var available_tiles = []
 
@@ -142,7 +147,6 @@ func start_game() -> void:
 	place_progress.max_value = PLANT_INTERVAL
 	place_progress.value = 0
 
-	# Schedule initial animations only for available tiles
 	_setup_initial_animations(original_positions, available_tiles)
 
 func _process(delta):
@@ -157,70 +161,101 @@ func _start_planting_system():
 	# Reset the round ended flag
 	round_ended = false
 	animation_debug_count = 0
-
+	weather_sequence_started = false
+	
 	# Start the game and round timer
 	game_started = true
-
+	
 	# Connect and start the round timer
 	_connect_round_timer()
 	round_timer.start()
-
+	
+	# Set up the timer to start weather transition 10 seconds before round end
+	_setup_weather_transition_timer()
+	if ROUND_DURATION > 5:
+		weather_transition_timer.start(ROUND_DURATION - 5)
+	
+	# Rest of your existing code...
 	# Fade in progress bar
 	var fade_tween = create_tween()
 	fade_tween.tween_property(place_progress, "modulate:a", 1.0, 0.5)\
 		.set_trans(Tween.TRANS_SINE)\
 		.set_ease(Tween.EASE_IN)
-
+	
 	# Start the planting timer
 	place_timer.wait_time = PLANT_INTERVAL
-
+	
 	# Disconnect any existing connections to prevent duplicates
 	if place_timer.timeout.is_connected(_on_place_timer_timeout):
 		place_timer.timeout.disconnect(_on_place_timer_timeout)
-
+	
 	place_timer.timeout.connect(_on_place_timer_timeout)
 	place_timer.start()
 
 func _on_round_end() -> void:
 	print("Round end triggered! Current round_ended state: ", round_ended)
-
+	
 	# If round already ended, don't do anything
 	if round_ended:
 		print("Round already ended, ignoring duplicate call")
 		return
-
+	
 	# Disconnect the timer to prevent any further calls
 	_disconnect_round_timer()
-
+	
 	# Set the round ended flag
 	round_ended = true
 	animation_debug_count = 0
 	game_started = false
 	place_timer.stop()
-
-	# Play stars_move_right animation when round ends
+	
+	# Cancel the weather transition timer if it's still running
+	if weather_transition_timer and weather_transition_timer.time_left > 0:
+		weather_transition_timer.stop()
+	
+	# If the weather sequence hasn't started yet, start it now
+	if not weather_sequence_started:
+		# Start the end-of-round animation sequence
+		if rain_animation_player:
+			print("Playing rain_end animation at round end")
+			rain_animation_player.play("rain_end")
+			
+			# Wait for rain_end animation to finish before playing sunray animation
+			await rain_animation_player.animation_finished
+		
+		if sunray_animation_player:
+			print("Playing ray_start animation")
+			sunray_animation_player.play("ray_start")
+			
+			# Wait for sunray animation before playing stars
+			await sunray_animation_player.animation_finished
+	else:
+		# If the weather sequence was already started, just wait for the sunray animation to finish
+		if sunray_animation_player and sunray_animation_player.is_playing():
+			await sunray_animation_player.animation_finished
+	
+	# Play the stars animation
 	if star_animation_player:
 		animation_debug_count += 1
 		print("Playing stars_move_right animation (count: ", animation_debug_count, ")")
 		star_animation_player.play("stars_move_right")
-
+	
 	# Show upgrade container with sliding animation
 	upgrade_container.show()
 	var panel = upgrade_container.get_node("UpgradePanel")
-
 	var tween = create_tween()
 	tween.set_parallel(true)
-
+	
 	# Slide in from the right
 	tween.tween_property(panel, "position", panel.position - UPGRADE_PANEL_OFFSET, 0.5)\
 		.set_trans(Tween.TRANS_BACK)\
 		.set_ease(Tween.EASE_OUT)
-
+	
 	# Fade in
 	tween.tween_property(upgrade_container, "modulate:a", 1.0, 0.3)\
 		.set_trans(Tween.TRANS_SINE)\
 		.set_ease(Tween.EASE_IN)
-
+	
 	# Transition to upgrade camera - this is needed only when the round ends
 	transition_to_camera(upgrade_camera)
 
@@ -337,6 +372,7 @@ func _on_new_tile_pressed() -> void:
 func _on_restart_pressed() -> void:
 	print("Restart button pressed")
 	animation_debug_count = 0
+	weather_sequence_started = false
 
 	# Reset the round ended flag
 	round_ended = false
@@ -344,8 +380,13 @@ func _on_restart_pressed() -> void:
 	# Play stars_move_left animation when restart is pressed
 	if star_animation_player:
 		animation_debug_count += 1
-		print("Playing stars_move_left animation (count: ", animation_debug_count, ")")
+		print("Playing stars_move_left animation")
 		star_animation_player.play("stars_move_left")
+		
+	# Hide sunrays if they're visible
+	if sunray_animation_player:
+		print("Playing ray_end animation")
+		sunray_animation_player.play("ray_end")
 
 	# Clear objects from previous round
 	for obj in round_objects:
@@ -377,6 +418,11 @@ func _on_restart_pressed() -> void:
 		upgrade_container.hide()
 		# Transition back to main camera when UI elements are hidden
 		transition_to_camera(main_camera)
+
+		# Start rain again for the new round
+		if rain_animation_player:
+			print("Playing rain_start animation for new round")
+			rain_animation_player.play("rain_start")
 
 		# Reset and start new round
 		print("Starting new round")
@@ -422,6 +468,7 @@ func _place_random_plant(tile: Node) -> void:
 		plant_instance.play_placed_sound()
 
 func _setup_initial_animations(original_positions: Dictionary, available_tiles: Array) -> void:
+	
 	var total_tiles = available_tiles.size()
 	var total_animation_time = (0.25 * (total_tiles - 1)) + 0.6
 
@@ -499,7 +546,15 @@ func _setup_initial_animations(original_positions: Dictionary, available_tiles: 
 		1.0,
 		1.0
 	).set_delay(cloud_delay + 0.3)  # Start after last cloud appears
-
+	
+	# Play rain animation after a short delay
+	var rain_animation_tween = create_tween()
+	rain_animation_tween.tween_callback(func():
+		if rain_animation_player:
+			print("Playing rain_start animation")
+			rain_animation_player.play("rain_start")
+	).set_delay(cloud_delay + 0.6)  # Start rain animation after material effect begins
+	
 	# Calculate the final animation time to include cloud animations
 	var final_delay = cloud_delay + 1.0  # Add extra time for rain animation to be visible
 
@@ -509,3 +564,36 @@ func _setup_initial_animations(original_positions: Dictionary, available_tiles: 
 	startup_timer.one_shot = true
 	startup_timer.timeout.connect(_start_planting_system)
 	startup_timer.start(final_delay)
+
+# Add this function to initialize the weather transition timer
+func _setup_weather_transition_timer():
+	# Remove any existing timer
+	if weather_transition_timer:
+		weather_transition_timer.queue_free()
+		
+	# Create a new timer for weather transition
+	weather_transition_timer = Timer.new()
+	add_child(weather_transition_timer)
+	weather_transition_timer.one_shot = true
+	weather_transition_timer.timeout.connect(_start_weather_transition)
+
+# Add this function to start the weather transition sequence
+func _start_weather_transition():
+	if weather_sequence_started:
+		return
+	
+	weather_sequence_started = true
+	print("Starting weather transition sequence")
+	
+	# Start rain end animation
+	if rain_animation_player:
+		print("Playing rain_end animation early")
+		rain_animation_player.play("rain_end")
+		
+		# Wait for rain_end animation to finish before playing sunray animation
+		await rain_animation_player.animation_finished
+	
+	# Then play sunray animation
+	if sunray_animation_player:
+		print("Playing ray_start animation")
+		sunray_animation_player.play("ray_start")

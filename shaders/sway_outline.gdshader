@@ -41,7 +41,7 @@ void vertex() {
     // Apply sway effect
     float time = TIME * swaySpeed + offset;
     VERTEX.x += getWind(VERTEX.xy, UV, time);
-    
+
     // Compensate for outline
     VERTEX = vec2(VERTEX.x * (1.0 + TEXTURE_PIXEL_SIZE.x * max(maxLineWidth, minLineWidth) * 2.0),
                  VERTEX.y * (1.0 + TEXTURE_PIXEL_SIZE.y * max(maxLineWidth, minLineWidth) * 2.0));
@@ -87,7 +87,7 @@ float get_line_width(vec2 p, float s) {
         p /= 2.0;
         intensity /= 2.0;
     }
-    
+
     return mix(maxLineWidth, minLineWidth, w);
 }
 
@@ -113,7 +113,7 @@ void fragment() {
         vec2 edge = TEXTURE_PIXEL_SIZE * max(maxLineWidth, minLineWidth) * 2.0;
         uv = uv + uv * edge;
         uv += vec2(0.5);
-        
+
         // Apply outline.
         vec4 newColor = texture(TEXTURE, uv);
         if (newColor.a <= tolerance || border(uv)) {
